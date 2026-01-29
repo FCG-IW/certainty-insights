@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logoPrimaryLight from "@/assets/logo-primary-light.png";
 
 export function Footer() {
   return (
@@ -8,9 +9,11 @@ export function Footer() {
           {/* Company Info */}
           <div className="lg:col-span-2">
             <Link to="/" className="inline-block mb-6">
-              <span className="text-lg font-semibold tracking-tight">
-                Financial Compliance Group
-              </span>
+              <img 
+                src={logoPrimaryLight} 
+                alt="Financial Compliance Group" 
+                className="h-10 w-auto"
+              />
             </Link>
             <p className="text-sm text-background/80 max-w-xl leading-relaxed">
               Financial Compliance Group, Inc. is a certified minority woman-owned, 

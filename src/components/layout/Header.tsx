@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import logoPrimaryDark from "@/assets/logo-primary-dark.png";
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -34,13 +35,12 @@ export function Header() {
       <div className="container-wide">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex flex-col">
-            <span className="text-lg font-semibold text-foreground tracking-tight">
-              Financial Compliance Group
-            </span>
-            <span className="text-xs text-muted-foreground tracking-wide">
-              Reducing Risk. Maximizing Trust.
-            </span>
+          <Link to="/" className="flex items-center">
+            <img 
+              src={logoPrimaryDark} 
+              alt="Financial Compliance Group" 
+              className="h-12 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
