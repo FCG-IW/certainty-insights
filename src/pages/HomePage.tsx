@@ -1,6 +1,7 @@
 import { PageLayout } from "@/components/layout";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import interlockGraphic from "@/assets/interlock-graphic.png";
 
 const clients = [
   "Asset-Based Lenders",
@@ -47,12 +48,14 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Right: Image Placeholder */}
+            {/* Right: Interlock Graphic */}
             <div className="relative">
-              <div className="aspect-[4/3] bg-secondary rounded-lg flex items-center justify-center">
-                <span className="text-muted-foreground text-sm">
-                  Editorial Image Placeholder
-                </span>
+              <div className="aspect-[4/3] flex items-center justify-center">
+                <img 
+                  src={interlockGraphic} 
+                  alt="FCG Interlock Graphic" 
+                  className="w-full max-w-md"
+                />
               </div>
             </div>
           </div>
