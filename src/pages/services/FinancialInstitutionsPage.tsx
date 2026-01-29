@@ -1,134 +1,186 @@
 import { PageLayout } from "@/components/layout";
-import { Building2, FileSearch, Scale, Package, Wrench, FileText, TrendingUp, CheckCircle } from "lucide-react";
+import { Reveal } from "@/hooks/useScrollReveal";
+import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
+
+const services = [
+  { number: "01", name: "Collateral Field Examinations" },
+  { number: "02", name: "Forensic Accounting and Fraud Investigations" },
+  { number: "03", name: "Inventory and Fixed Asset Verifications" },
+  { number: "04", name: "Specialty Field Examinations" },
+  { number: "05", name: "Workout Support" },
+  { number: "06", name: "Other Agreed Upon Procedures" },
+];
 
 const industries = [
   "Financial or operational challenges, such as those in restructuring or bankruptcy proceedings",
-  "Rapid growth and needing capital to fund expansion, acquire inventory, or meet rising demand, which often outpaces their immediate cash flow, such as those in e-commerce, digital services sectors",
+  "Rapid growth and needing capital to fund expansion, acquire inventory, or meet rising demand",
   "Large payrolls and receivables, such as those in staffing and professional services sectors",
-  "Significant raw materials, work-in-progress, and finished goods, such as those in manufacturing and distribution sectors",
-  "Fluctuating or inconsistent cash flows, such as retailers, manufacturers, distributors, or commodity-based businesses",
-  "Seasonal inventory needs or fluctuating sales, such as those in the apparel and electronics sectors",
-  "Significant CAPEX investments, such as those in transportation, oilfield services, energy, technology and telecommunications sectors",
-  "Cyclical market volatility, such as those in the metals, mining, oil and gas sectors",
-  "Loan portfolios, such as auto finance companies, mortgage lenders, hard money real estate lenders, equipment finance companies, consumer lenders and litigation finance firms",
-];
-
-const services = [
-  { icon: FileSearch, name: "Collateral Field Examinations" },
-  { icon: Scale, name: "Forensic Accounting and Fraud Investigations" },
-  { icon: Package, name: "Inventory and Fixed Asset Verifications" },
-  { icon: TrendingUp, name: "Specialty Field Examinations" },
-  { icon: Wrench, name: "Workout Support" },
-  { icon: FileText, name: "Other Agreed Upon Procedures" },
+  "Significant raw materials, work-in-progress, and finished goods, such as those in manufacturing and distribution",
+  "Fluctuating or inconsistent cash flows, such as retailers, manufacturers, distributors",
+  "Seasonal inventory needs or fluctuating sales, such as those in apparel and electronics",
+  "Significant CAPEX investments, such as those in transportation, oilfield services, energy",
+  "Cyclical market volatility, such as those in metals, mining, oil and gas",
+  "Loan portfolios, such as auto finance companies, mortgage lenders, equipment finance firms",
 ];
 
 export default function FinancialInstitutionsPage() {
   return (
     <PageLayout>
-      <article className="section-spacing">
+      {/* Hero Section */}
+      <section className="pt-20 pb-16 md:pt-32 md:pb-24">
         <div className="container-wide">
-          {/* Hero Section */}
-          <div className="max-w-3xl mb-16">
-            <div className="opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-2 text-sm font-medium text-primary mb-4">
-                <Building2 className="h-4 w-4" />
-                Our Services
-              </span>
+          <div className="grid lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8">
+              <Reveal>
+                <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase text-primary border-l-2 border-primary pl-4 mb-8">
+                  Services
+                </span>
+              </Reveal>
+              <Reveal delay={100}>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-foreground">
+                  Financial<br />
+                  <span className="text-primary">Institutions</span>
+                </h1>
+              </Reveal>
             </div>
-            <h1 className="mb-8 text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              Financial Institutions Services
-            </h1>
-            <p className="text-xl leading-relaxed text-muted-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              Critical analysis that enables informed credit decisions with greater certainty.
-            </p>
-          </div>
-
-          {/* Introduction Card */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/5 via-card to-card p-8 md:p-12 border border-primary/10 mb-16 opacity-0 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/2"></div>
-            <div className="relative max-w-3xl space-y-6">
-              <p className="text-lg leading-relaxed text-foreground">
-                We have demonstrated success in <span className="font-semibold text-primary">asset-based lending and collateral field 
-                examinations</span>, corporate loan fraud investigations, workout support, and 
-                other agreed-upon procedures to help lenders and funders protect their investments.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                The result: a critical analysis that enables informed credit decisions with greater certainty, 
-                ultimately leading to successful transactions.
-              </p>
-            </div>
-          </div>
-
-          {/* Services Grid */}
-          <div className="mb-16">
-            <h2 className="text-2xl font-semibold mb-8 text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              Services Include
-            </h2>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {services.map((service, index) => (
-                <div
-                  key={service.name}
-                  className="group relative bg-card rounded-2xl p-6 border border-border hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 opacity-0 animate-fade-in"
-                  style={{ animationDelay: `${0.4 + index * 0.05}s` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative flex items-center gap-4">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                      <service.icon className="h-6 w-6" />
-                    </div>
-                    <span className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                      {service.name}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Industries Section */}
-          <div className="mb-16">
-            <div className="max-w-3xl mb-8 opacity-0 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">
-                Industries We Serve
-              </h2>
-              <p className="text-muted-foreground">
-                FCG conducts vital analysis of a borrower's assets, financial information, and operations 
-                to support lending decisions across every stage of the business life cycle, including companies with:
-              </p>
-            </div>
-            <div className="grid gap-3">
-              {industries.map((industry, index) => (
-                <div
-                  key={industry}
-                  className="group flex items-start gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 opacity-0 animate-fade-in"
-                  style={{ animationDelay: `${0.5 + index * 0.03}s` }}
-                >
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary mt-0.5">
-                    <CheckCircle className="h-4 w-4" />
-                  </div>
-                  <span className="text-foreground leading-relaxed">{industry}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Customization Statement */}
-          <div className="relative overflow-hidden rounded-2xl bg-foreground text-background p-8 md:p-10 opacity-0 animate-fade-in" style={{ animationDelay: "0.7s" }}>
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
-            <div className="relative max-w-3xl">
-              <h3 className="text-xl font-semibold mb-4 text-primary">
-                Customized Engagements
-              </h3>
-              <p className="leading-relaxed text-background/90">
-                We customize engagements from supporting underwriting and credit 
-                personnel on standard asset-based lending (ABL) structures to complex 
-                situations (Bankruptcy, Mergers and Acquisitions (M&A), Recapitalizations), 
-                adapting procedures to different lender needs and global requirements.
-              </p>
+            <div className="lg:col-span-4">
+              <Reveal delay={200}>
+                <p className="text-xl text-muted-foreground font-light">
+                  Critical analysis enabling informed credit decisions with greater certainty.
+                </p>
+              </Reveal>
             </div>
           </div>
         </div>
-      </article>
+      </section>
+
+      {/* Statement */}
+      <section className="py-20 md:py-28 bg-foreground text-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/4 h-full bg-primary/20" />
+        <div className="container-wide relative">
+          <div className="grid lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-2">
+              <Reveal>
+                <span className="text-sm tracking-[0.2em] uppercase text-primary">Expertise</span>
+              </Reveal>
+            </div>
+            <div className="lg:col-span-8">
+              <Reveal delay={100}>
+                <p className="text-2xl md:text-3xl leading-snug font-light">
+                  We have demonstrated success in{" "}
+                  <span className="text-primary font-medium">asset-based lending</span>,{" "}
+                  <span className="text-primary font-medium">collateral field examinations</span>,{" "}
+                  corporate loan fraud investigations, workout support, and other agreed-upon 
+                  procedures.
+                </p>
+              </Reveal>
+              <Reveal delay={200}>
+                <p className="text-lg text-background/70 mt-8 leading-relaxed">
+                  Helping lenders, commercial banks, and independent financial institutions 
+                  protect their investments and make confident, well-supported decisions.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Grid */}
+      <section className="py-24 md:py-32">
+        <div className="container-wide">
+          <Reveal>
+            <div className="flex items-center justify-between mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+                Our Services
+              </h2>
+              <Link 
+                to="/contact"
+                className="hidden md:flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+              >
+                Get in touch <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </Reveal>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-border">
+            {services.map((service, index) => (
+              <Reveal key={service.name} delay={index * 50}>
+                <div className="group border-b border-r border-border p-8 md:p-10 hover:bg-primary/5 transition-colors duration-500 h-full">
+                  <span className="text-5xl font-bold text-primary/20 group-hover:text-primary/40 transition-colors block mb-6">
+                    {service.number}
+                  </span>
+                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    {service.name}
+                  </h3>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Industries Section */}
+      <section className="py-24 md:py-32 bg-secondary/30">
+        <div className="container-wide">
+          <Reveal>
+            <div className="mb-16">
+              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                Industries We Serve
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground max-w-3xl">
+                Comprehensive reviews across every stage of the business life cycle
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="grid lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-4">
+              <Reveal delay={100}>
+                <p className="text-lg text-muted-foreground leading-relaxed sticky top-32">
+                  FCG conducts vital analysis of a borrower's assets, financial information, 
+                  and operations to support lending decisions for a wide range of industries.
+                </p>
+              </Reveal>
+            </div>
+            <div className="lg:col-span-8">
+              <div className="space-y-0 border-t border-border">
+                {industries.map((industry, index) => (
+                  <Reveal key={index} delay={index * 50}>
+                    <div className="flex items-start gap-6 py-6 border-b border-border hover:bg-card transition-colors">
+                      <span className="text-2xl font-bold text-primary/30 w-10">
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <span className="text-foreground leading-relaxed">{industry}</span>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-16 border-t border-border">
+        <div className="container-wide">
+          <Reveal>
+            <div className="text-center">
+              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                We customize engagements from supporting underwriting and credit personnel 
+                on standard ABL structures to complex situations.
+              </p>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-3 bg-foreground text-background px-8 py-4 text-lg font-medium hover:bg-primary transition-colors"
+              >
+                Discuss Your Needs
+                <ArrowUpRight className="h-5 w-5" />
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </PageLayout>
   );
 }

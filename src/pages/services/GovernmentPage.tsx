@@ -1,11 +1,13 @@
 import { PageLayout } from "@/components/layout";
-import { Landmark, FileSearch, Scale, ShieldCheck, ClipboardCheck, BadgeCheck, Hash } from "lucide-react";
+import { Reveal } from "@/hooks/useScrollReveal";
+import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const services = [
-  { icon: ClipboardCheck, name: "Contract Audit and Assurance Services" },
-  { icon: FileSearch, name: "Contract Investigations and Enforcement" },
-  { icon: Scale, name: "Forensic Accounting and Fraud Investigations" },
-  { icon: ShieldCheck, name: "Fraud Prevention" },
+  { name: "Contract Audit and Assurance Services" },
+  { name: "Contract Investigations and Enforcement" },
+  { name: "Forensic Accounting and Fraud Investigations" },
+  { name: "Fraud Prevention" },
 ];
 
 const naicsCodes = [
@@ -47,103 +49,144 @@ const certifications = [
 export default function GovernmentPage() {
   return (
     <PageLayout>
-      <article className="section-spacing">
+      {/* Hero Section */}
+      <section className="pt-20 pb-16 md:pt-32 md:pb-24">
         <div className="container-wide">
-          {/* Hero Section */}
-          <div className="max-w-3xl mb-16">
-            <div className="opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-2 text-sm font-medium text-primary mb-4">
-                <Landmark className="h-4 w-4" />
+          <div className="grid lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8">
+              <Reveal>
+                <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase text-primary border-l-2 border-primary pl-4 mb-8">
+                  Services
+                </span>
+              </Reveal>
+              <Reveal delay={100}>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-foreground">
+                  Government<br />
+                  <span className="text-primary">Agencies</span>
+                </h1>
+              </Reveal>
+            </div>
+            <div className="lg:col-span-4">
+              <Reveal delay={200}>
+                <p className="text-xl text-muted-foreground font-light">
+                  Supporting transparency, accountability, and stewardship of public resources.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Statement */}
+      <section className="py-20 md:py-28 bg-foreground text-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/4 h-full bg-primary/20" />
+        <div className="container-wide relative">
+          <div className="grid lg:grid-cols-12 gap-12">
+            <div className="lg:col-span-2">
+              <Reveal>
+                <span className="text-sm tracking-[0.2em] uppercase text-primary">Mission</span>
+              </Reveal>
+            </div>
+            <div className="lg:col-span-8">
+              <Reveal delay={100}>
+                <p className="text-2xl md:text-3xl leading-snug font-light">
+                  Government agencies operate under heightened expectations for{" "}
+                  <span className="text-primary font-medium">transparency</span>,{" "}
+                  <span className="text-primary font-medium">accountability</span>, and{" "}
+                  <span className="text-primary font-medium">stewardship</span> of public resources.
+                </p>
+              </Reveal>
+              <Reveal delay={200}>
+                <p className="text-lg text-background/70 mt-8 leading-relaxed">
+                  We verify regulatory compliance and contract performance of vendors, 
+                  grantees, and awardees of government contracts to strengthen 
+                  accountability and safeguard taxpayer dollars.
+                </p>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services */}
+      <section className="py-24 md:py-32">
+        <div className="container-wide">
+          <Reveal>
+            <div className="flex items-center justify-between mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
                 Our Services
-              </span>
+              </h2>
+              <Link 
+                to="/contact"
+                className="hidden md:flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+              >
+                Get in touch <ArrowUpRight className="h-4 w-4" />
+              </Link>
             </div>
-            <h1 className="mb-8 text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              Government Agencies Services
-            </h1>
-            <p className="text-xl leading-relaxed text-muted-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              Supporting transparency, accountability, and stewardship of public resources.
-            </p>
-          </div>
-
-          {/* Introduction Card */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary/5 via-card to-card p-8 md:p-12 border border-primary/10 mb-16 opacity-0 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-primary/10 to-transparent rounded-full -translate-y-1/2 translate-x-1/2"></div>
-            <div className="relative max-w-3xl space-y-6">
-              <p className="text-lg leading-relaxed text-foreground">
-                Government agencies operate under heightened expectations for 
-                <span className="font-semibold text-primary"> transparency, accountability, and stewardship</span> of public resources—and 
-                FCG is built to support those mandates.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                We verify regulatory compliance and contract performance of vendors, 
-                grantees, and awardees of government contracts to strengthen 
-                accountability and safeguard taxpayer dollars.
-              </p>
-            </div>
-          </div>
-
-          {/* Services Grid */}
-          <div className="mb-16">
-            <h2 className="text-2xl font-semibold mb-8 text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-              Services for Government Entities
-            </h2>
-            <div className="grid gap-4 md:grid-cols-2">
-              {services.map((service, index) => (
-                <div
-                  key={service.name}
-                  className="group relative bg-card rounded-2xl p-6 border border-border hover:border-primary/30 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1 opacity-0 animate-fade-in"
-                  style={{ animationDelay: `${0.4 + index * 0.1}s` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  <div className="relative flex items-center gap-4">
-                    <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                      <service.icon className="h-7 w-7" />
-                    </div>
-                    <span className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
+          </Reveal>
+          
+          <div className="grid md:grid-cols-2 gap-0 border-t border-l border-border">
+            {services.map((service, index) => (
+              <Reveal key={service.name} delay={index * 100}>
+                <div className="group border-b border-r border-border p-10 md:p-12 hover:bg-primary/5 transition-colors duration-500">
+                  <div className="flex items-start justify-between">
+                    <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors pr-8">
                       {service.name}
+                    </h3>
+                    <span className="text-4xl font-bold text-primary/20">
+                      {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
                 </div>
-              ))}
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Certifications Section */}
+      <section className="py-24 md:py-32 bg-secondary/30">
+        <div className="container-wide">
+          <Reveal>
+            <div className="mb-16">
+              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                Credentials
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+                Government Firm Certifications
+              </h2>
             </div>
+          </Reveal>
+
+          {/* UEI and CAGE */}
+          <div className="grid md:grid-cols-2 gap-0 mb-16">
+            <Reveal delay={100}>
+              <div className="bg-foreground text-background p-10 md:p-12">
+                <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                  Unique Entity Identifier
+                </span>
+                <p className="text-3xl md:text-4xl font-mono font-bold">NCVRRUH2MQB6</p>
+              </div>
+            </Reveal>
+            <Reveal delay={200}>
+              <div className="bg-primary text-foreground p-10 md:p-12">
+                <span className="inline-block text-sm tracking-[0.2em] uppercase text-foreground/70 mb-4">
+                  CAGE Code
+                </span>
+                <p className="text-3xl md:text-4xl font-mono font-bold">8VS15</p>
+              </div>
+            </Reveal>
           </div>
 
-          {/* Government Firm Certifications */}
-          <div className="pt-12 border-t border-border">
-            <h2 className="text-2xl font-semibold mb-8 text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-              Government Firm Certifications
-            </h2>
-
-            {/* UEI and CAGE */}
-            <div className="grid gap-6 md:grid-cols-2 mb-10 opacity-0 animate-fade-in" style={{ animationDelay: "0.55s" }}>
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 p-6 border border-primary/10">
-                <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
-                  Unique Entity Identifier
-                </div>
-                <p className="text-2xl font-mono font-bold text-foreground">NCVRRUH2MQB6</p>
-              </div>
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 p-6 border border-primary/10">
-                <div className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
-                  CAGE Code
-                </div>
-                <p className="text-2xl font-mono font-bold text-foreground">8VS15</p>
-              </div>
-            </div>
-
-            {/* Codes Grid */}
-            <div className="grid gap-8 lg:grid-cols-2 mb-10">
-              {/* NAICS Codes */}
-              <div className="bg-card rounded-2xl p-6 border border-border opacity-0 animate-fade-in" style={{ animationDelay: "0.6s" }}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <Hash className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground">NAICS Codes</h3>
-                </div>
-                <div className="space-y-3">
+          {/* Codes Tables */}
+          <div className="grid lg:grid-cols-2 gap-8 mb-16">
+            <Reveal delay={100}>
+              <div className="bg-card p-8 md:p-10 border border-border">
+                <h3 className="text-xl font-bold text-foreground mb-8">NAICS Codes</h3>
+                <div className="space-y-4">
                   {naicsCodes.map((item) => (
-                    <div key={item.code} className="flex gap-4 text-sm group">
-                      <span className="font-mono text-primary font-semibold w-16 flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <div key={item.code} className="flex gap-6 text-sm border-b border-border pb-4 last:border-0 last:pb-0">
+                      <span className="font-mono text-primary font-bold w-20 flex-shrink-0">
                         {item.code}
                       </span>
                       <span className="text-muted-foreground">{item.description}</span>
@@ -151,53 +194,50 @@ export default function GovernmentPage() {
                   ))}
                 </div>
               </div>
+            </Reveal>
 
-              {/* NIGP Codes */}
-              <div className="bg-card rounded-2xl p-6 border border-border opacity-0 animate-fade-in" style={{ animationDelay: "0.65s" }}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                    <Hash className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground">NIGP Codes</h3>
-                </div>
-                <div className="grid grid-cols-1 gap-2">
+            <Reveal delay={200}>
+              <div className="bg-card p-8 md:p-10 border border-border">
+                <h3 className="text-xl font-bold text-foreground mb-8">NIGP Codes</h3>
+                <div className="grid grid-cols-1 gap-3">
                   {nigpCodes.map((item) => (
-                    <div key={item.code} className="flex gap-4 text-sm group">
-                      <span className="font-mono text-primary font-semibold w-14 flex-shrink-0 group-hover:scale-105 transition-transform">
+                    <div key={item.code} className="flex gap-4 text-sm">
+                      <span className="font-mono text-primary font-bold w-16 flex-shrink-0">
                         {item.code}
                       </span>
-                      <span className="text-muted-foreground text-xs">{item.description}</span>
+                      <span className="text-muted-foreground text-xs leading-relaxed">
+                        {item.description}
+                      </span>
                     </div>
                   ))}
                 </div>
               </div>
-            </div>
+            </Reveal>
+          </div>
 
-            {/* Social Economic Certifications */}
-            <div className="opacity-0 animate-fade-in" style={{ animationDelay: "0.7s" }}>
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                  <BadgeCheck className="h-5 w-5" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground">Social Economic Certifications</h3>
-              </div>
-              <div className="grid gap-3">
+          {/* Social Economic Certifications */}
+          <Reveal delay={100}>
+            <div>
+              <h3 className="text-xl font-bold text-foreground mb-8">
+                Social Economic Certifications
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
                 {certifications.map((cert, index) => (
                   <div 
-                    key={cert} 
-                    className="group flex items-start gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/30 hover:bg-primary/5 transition-all duration-300"
+                    key={cert}
+                    className="flex items-start gap-4 p-6 bg-card border border-border hover:border-primary/30 transition-colors"
                   >
-                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                      <BadgeCheck className="h-4 w-4" />
-                    </div>
-                    <span className="text-sm text-foreground leading-relaxed pt-1">{cert}</span>
+                    <span className="text-sm font-bold text-primary/50">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-sm text-foreground leading-relaxed">{cert}</span>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
+          </Reveal>
         </div>
-      </article>
+      </section>
     </PageLayout>
   );
 }
