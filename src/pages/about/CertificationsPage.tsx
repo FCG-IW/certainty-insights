@@ -1,7 +1,7 @@
 import { PageLayout } from "@/components/layout";
-import { BadgeCheck, Award, Building2 } from "lucide-react";
+import { Reveal } from "@/hooks/useScrollReveal";
 
-const certificationLogos = [
+const certificationBadges = [
   { abbr: "WOSB", name: "Women-Owned Small Business" },
   { abbr: "MBE", name: "Minority Business Enterprise" },
   { abbr: "DBE", name: "Disadvantaged Business Enterprise" },
@@ -24,72 +24,96 @@ const certifications = [
 export default function CertificationsPage() {
   return (
     <PageLayout>
-      <article className="section-spacing">
+      {/* Hero Section */}
+      <section className="pt-20 pb-16 md:pt-32 md:pb-24">
         <div className="container-wide">
-          {/* Hero Section */}
-          <div className="max-w-3xl mb-16">
-            <div className="opacity-0 animate-fade-in" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-2 text-sm font-medium text-primary mb-4">
-                <BadgeCheck className="h-4 w-4" />
-                About FCG
-              </span>
+          <div className="grid lg:grid-cols-12 gap-8 items-end">
+            <div className="lg:col-span-8">
+              <Reveal>
+                <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase text-primary border-l-2 border-primary pl-4 mb-8">
+                  About FCG
+                </span>
+              </Reveal>
+              <Reveal delay={100}>
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-foreground">
+                  Our<br />
+                  <span className="text-primary">Certifications</span>
+                </h1>
+              </Reveal>
             </div>
-            <h1 className="mb-8 text-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.2s" }}>
-              Our Certifications
-            </h1>
-            <p className="text-xl leading-relaxed text-muted-foreground opacity-0 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-              Financial Compliance Group, Inc. is a certified minority woman-owned, 
-              small business, and disadvantaged business enterprise headquartered in 
-              North Carolina and working nationwide.
-            </p>
+            <div className="lg:col-span-4">
+              <Reveal delay={200}>
+                <p className="text-xl text-muted-foreground font-light">
+                  A certified minority woman-owned, small business, and disadvantaged 
+                  business enterprise working nationwide.
+                </p>
+              </Reveal>
+            </div>
           </div>
+        </div>
+      </section>
 
-          {/* Certification Badges */}
-          <div className="mb-16 opacity-0 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-              {certificationLogos.map((cert, index) => (
-                <div 
-                  key={cert.abbr}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 p-6 text-center border border-primary/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative">
-                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/20 text-primary mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <Award className="h-6 w-6" />
-                    </div>
-                    <div className="text-xl font-bold text-primary">{cert.abbr}</div>
-                    <div className="text-xs text-muted-foreground mt-1 leading-tight">{cert.name}</div>
+      {/* Certification Badges */}
+      <section className="py-16 bg-foreground text-background">
+        <div className="container-wide">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-0">
+            {certificationBadges.map((cert, index) => (
+              <Reveal key={cert.abbr} delay={index * 50}>
+                <div className="border-r border-background/10 last:border-r-0 text-center py-8 px-4">
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                    {cert.abbr}
+                  </div>
+                  <div className="text-xs md:text-sm text-background/60 leading-tight">
+                    {cert.name}
                   </div>
                 </div>
-              ))}
-            </div>
+              </Reveal>
+            ))}
           </div>
+        </div>
+      </section>
 
-          {/* Certification List */}
-          <div className="opacity-0 animate-fade-in" style={{ animationDelay: "0.5s" }}>
-            <h2 className="text-2xl font-semibold mb-8 text-foreground flex items-center gap-3">
-              <Building2 className="h-6 w-6 text-primary" />
-              Social Economic Certifications
-            </h2>
-            <div className="grid gap-3">
-              {certifications.map((cert, index) => (
-                <div
-                  key={cert}
-                  className="group flex items-start gap-4 p-4 rounded-xl bg-card border border-border hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 opacity-0 animate-fade-in"
-                  style={{ animationDelay: `${0.6 + index * 0.05}s` }}
-                >
-                  <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                    <BadgeCheck className="h-4 w-4" />
-                  </div>
+      {/* Full Certifications List */}
+      <section className="py-24 md:py-32">
+        <div className="container-wide">
+          <Reveal>
+            <div className="mb-16">
+              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                Credentials
+              </span>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground">
+                Social Economic Certifications
+              </h2>
+            </div>
+          </Reveal>
+
+          <div className="grid md:grid-cols-2 gap-0 border-t border-l border-border">
+            {certifications.map((cert, index) => (
+              <Reveal key={cert} delay={index * 50}>
+                <div className="group flex items-start gap-6 p-8 border-b border-r border-border hover:bg-primary/5 transition-colors">
+                  <span className="text-3xl font-bold text-primary/30 group-hover:text-primary/50 transition-colors">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                   <span className="text-foreground leading-relaxed pt-1">
                     {cert}
                   </span>
                 </div>
-              ))}
-            </div>
+              </Reveal>
+            ))}
           </div>
         </div>
-      </article>
+      </section>
+
+      {/* Statement */}
+      <section className="py-16 border-t border-border">
+        <div className="container-wide">
+          <Reveal>
+            <p className="text-center text-lg text-muted-foreground max-w-3xl mx-auto">
+              Headquartered in North Carolina and serving clients nationwide.
+            </p>
+          </Reveal>
+        </div>
+      </section>
     </PageLayout>
   );
 }
