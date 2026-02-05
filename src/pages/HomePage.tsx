@@ -61,15 +61,17 @@ export default function HomePage() {
               <Reveal delay={100}>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight text-foreground">
                   Delivering
-                  <span className="block text-primary">Actionable</span>
-                  <span className="block">Insights.</span>
+                  <span className="block text-primary">Actionable Insights</span>
+                  <span className="block">and Inspiring</span>
+                  <span className="block text-primary">Certainty.</span>
                 </h1>
               </Reveal>
               
               <Reveal delay={200}>
-                <p className="text-xl md:text-2xl text-muted-foreground max-w-xl leading-relaxed font-light">
+                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed font-light">
                   When making informed credit decisions, you need accurate and reliable 
-                  information. That's where FCG comes in.
+                  information about an organization's financial or non-financial status. 
+                  That's where FCG comes in.
                 </p>
               </Reveal>
               
@@ -143,11 +145,13 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-8">
               <Reveal delay={100}>
-                <p className="text-3xl md:text-4xl lg:text-5xl leading-tight font-light">
+                <p className="text-2xl md:text-3xl lg:text-4xl leading-snug font-light">
                   Over two decades of{" "}
-                  <span className="text-primary font-medium">deep analytical expertise</span>,{" "}
-                  diplomatic approach, and{" "}
-                  <span className="text-primary font-medium">relentless work ethic</span>.
+                  <span className="text-primary font-medium">deep analytical and accounting expertise</span>,{" "}
+                  diplomatic and consultative approach, and{" "}
+                  <span className="text-primary font-medium">relentless work ethic</span>. We are committed to 
+                  building trust through transparency and strong communication, helping clients navigate 
+                  complex commercial lending, investing, and government contracting transactions.
                 </p>
               </Reveal>
             </div>
