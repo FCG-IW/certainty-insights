@@ -38,55 +38,41 @@ export default function HomePage() {
 
   return (
     <PageLayout>
-      {/* Hero Section - Editorial Full Bleed */}
-      <section className="min-h-[90vh] flex items-center relative overflow-hidden">
-        {/* Background Grid Pattern */}
-        <div className="absolute inset-0 opacity-[0.03]">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)`,
-            backgroundSize: '60px 60px'
-          }} />
-        </div>
-        
-        <div className="container-wide relative z-10">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-4 items-center">
-            {/* Left: Bold Typography */}
-            <div className="lg:col-span-7 space-y-8">
+      {/* Hero Section - Clean & Focused */}
+      <section className="min-h-[85vh] flex items-center pt-8">
+        <div className="container-wide">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+            {/* Left: Typography */}
+            <div className="space-y-10">
               <Reveal delay={0}>
-                <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase text-primary border-l-2 border-primary pl-4">
-                  Trusted Since 2002
-                </span>
-              </Reveal>
-              
-              <Reveal delay={100}>
-                <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[0.95] tracking-tight text-foreground">
-                  Delivering
-                  <span className="block text-primary">Actionable Insights</span>
-                  <span className="block">and Inspiring</span>
-                  <span className="block text-primary">Certainty.</span>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight text-foreground">
+                  Delivering{" "}
+                  <span className="text-primary">Actionable Insights</span>{" "}
+                  and Inspiring{" "}
+                  <span className="text-primary">Certainty.</span>
                 </h1>
               </Reveal>
               
-              <Reveal delay={200}>
-                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed font-light">
+              <Reveal delay={100}>
+                <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
                   When making informed credit decisions, you need accurate and reliable 
                   information about an organization's financial or non-financial status. 
                   That's where FCG comes in.
                 </p>
               </Reveal>
               
-              <Reveal delay={300}>
-                <div className="flex flex-wrap gap-4 pt-4">
+              <Reveal delay={200}>
+                <div className="flex flex-wrap gap-4">
                   <Link
                     to="/services/financial-institutions"
-                    className="group inline-flex items-center gap-3 bg-foreground text-background px-8 py-4 text-lg font-medium hover:bg-primary transition-colors duration-300"
+                    className="group inline-flex items-center gap-3 bg-foreground text-background px-7 py-3.5 font-medium hover:bg-primary transition-colors duration-300"
                   >
                     Explore Services
-                    <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                   <Link
                     to="/contact"
-                    className="group inline-flex items-center gap-3 border-2 border-foreground px-8 py-4 text-lg font-medium hover:bg-foreground hover:text-background transition-all duration-300"
+                    className="inline-flex items-center gap-3 border border-border px-7 py-3.5 font-medium hover:border-foreground transition-colors duration-300"
                   >
                     Get in Touch
                   </Link>
@@ -94,41 +80,21 @@ export default function HomePage() {
               </Reveal>
             </div>
 
-            {/* Right: Floating Graphic with Parallax */}
-            <div className="lg:col-span-5 relative" ref={parallaxRef}>
-              <Reveal delay={400} direction="right">
+            {/* Right: Graphic */}
+            <div ref={parallaxRef} className="hidden lg:block">
+              <Reveal delay={300} direction="right">
                 <div 
-                  className="relative transition-transform duration-100"
+                  className="relative"
                   style={{ transform: `translateY(${offset}px)` }}
                 >
-                  {/* Decorative Frame */}
-                  <div className="absolute -inset-4 border border-primary/20" />
-                  <div className="absolute -inset-8 border border-primary/10" />
-                  
-                  <div className="relative bg-gradient-to-br from-primary/5 to-transparent p-8">
-                    <img 
-                      src={interlockGraphic} 
-                      alt="FCG Interlock Graphic" 
-                      className="w-full max-w-md mx-auto"
-                    />
-                  </div>
-                  
-                  {/* Floating Badge */}
-                  <div className="absolute -bottom-6 -left-6 bg-foreground text-background px-6 py-4">
-                    <div className="text-3xl font-bold">20+</div>
-                    <div className="text-sm text-background/70">Years of Excellence</div>
-                  </div>
+                  <img 
+                    src={interlockGraphic} 
+                    alt="FCG Interlock Graphic" 
+                    className="w-full max-w-sm mx-auto"
+                  />
                 </div>
               </Reveal>
             </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
-          <div className="flex flex-col items-center gap-2 text-muted-foreground">
-            <span className="text-xs tracking-[0.2em] uppercase">Scroll</span>
-            <div className="w-px h-12 bg-gradient-to-b from-muted-foreground to-transparent" />
           </div>
         </div>
       </section>
