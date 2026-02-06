@@ -1,5 +1,6 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
+import { ArrowRight, Mail, Linkedin } from "lucide-react";
 
 const credentials = [
   "Master's Degree in Accounting and Financial Management, University of Maryland Global Campus",
@@ -36,9 +37,27 @@ export default function FounderPage() {
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light">
+                <p className="text-xl text-muted-foreground font-light mb-6">
                   Founder and President with over three decades of industry experience.
                 </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a
+                    href="mailto:dana@fcgllc.net"
+                    className="group inline-flex items-center gap-3 bg-foreground text-background px-5 py-3 font-medium hover:bg-primary transition-colors"
+                  >
+                    <Mail className="h-4 w-4" />
+                    Connect via Email
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/dana-campbell-latimer-cfe-6310b45/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-center gap-3 border border-border px-5 py-3 font-medium hover:border-primary hover:text-primary transition-colors"
+                  >
+                    <Linkedin className="h-4 w-4" />
+                    LinkedIn
+                  </a>
+                </div>
               </Reveal>
             </div>
           </div>
@@ -161,6 +180,53 @@ export default function FounderPage() {
                 </div>
               </Reveal>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 md:py-32">
+        <div className="container-wide">
+          <Reveal>
+            <div className="text-center mb-12">
+              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                Continue Exploring
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Learn More About FCG
+              </h2>
+            </div>
+          </Reveal>
+          
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <Reveal delay={100}>
+              <a
+                href="/about/approach"
+                className="group flex items-center justify-between p-8 border border-border hover:border-primary hover:bg-primary/5 transition-colors"
+              >
+                <div>
+                  <span className="block text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    Our Approach
+                  </span>
+                  <span className="text-sm text-muted-foreground">Discipline, Discovery, Diplomacy</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
+              </a>
+            </Reveal>
+            <Reveal delay={200}>
+              <a
+                href="/about/history"
+                className="group flex items-center justify-between p-8 border border-border hover:border-primary hover:bg-primary/5 transition-colors"
+              >
+                <div>
+                  <span className="block text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    Our History
+                  </span>
+                  <span className="text-sm text-muted-foreground">Trusted since 2002</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
+              </a>
+            </Reveal>
           </div>
         </div>
       </section>

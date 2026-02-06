@@ -189,6 +189,44 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* About CTA Section */}
+      <section className="py-24 md:py-32 border-t border-border">
+        <div className="container-wide">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <Reveal>
+                <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                  About FCG
+                </span>
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                  Built on Two Decades of Trust
+                </h2>
+                <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
+                  Learn how our foundation on the industry's three Cs—Competent, 
+                  Collaborative, and Committed—has guided over a thousand successful engagements.
+                </p>
+              </Reveal>
+            </div>
+            <div className="lg:col-span-5">
+              <Reveal delay={100}>
+                <Link
+                  to="/about/history"
+                  className="group flex items-center justify-between p-8 bg-secondary/50 hover:bg-secondary transition-colors"
+                >
+                  <div>
+                    <span className="block text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
+                      Our History
+                    </span>
+                    <span className="text-muted-foreground">Discover our story</span>
+                  </div>
+                  <ArrowRight className="h-6 w-6 text-primary group-hover:translate-x-2 transition-transform" />
+                </Link>
+              </Reveal>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section - Split Design */}
       <section className="py-24 md:py-32">
         <div className="container-wide">
