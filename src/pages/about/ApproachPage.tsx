@@ -1,5 +1,6 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
+import { ArrowRight } from "lucide-react";
 
 const values = [
   {
@@ -128,6 +129,53 @@ export default function ApproachPage() {
               to help connect the dots.
             </p>
           </Reveal>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 md:py-32 bg-secondary/30">
+        <div className="container-wide">
+          <Reveal>
+            <div className="text-center mb-12">
+              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                Continue Exploring
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Learn More About FCG
+              </h2>
+            </div>
+          </Reveal>
+          
+          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <Reveal delay={100}>
+              <a
+                href="/about/founder"
+                className="group flex items-center justify-between p-8 bg-card border border-border hover:border-primary transition-colors"
+              >
+                <div>
+                  <span className="block text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    Meet Our Founder
+                  </span>
+                  <span className="text-sm text-muted-foreground">Dana Campbell Latimer, CFE</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
+              </a>
+            </Reveal>
+            <Reveal delay={200}>
+              <a
+                href="/about/history"
+                className="group flex items-center justify-between p-8 bg-card border border-border hover:border-primary transition-colors"
+              >
+                <div>
+                  <span className="block text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    Our History
+                  </span>
+                  <span className="text-sm text-muted-foreground">Trusted since 2002</span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
+              </a>
+            </Reveal>
+          </div>
         </div>
       </section>
     </PageLayout>
