@@ -37,6 +37,28 @@ export default function HomePage() {
   const { ref: parallaxRef, offset } = useParallax(0.3);
 
   return (
+    <>
+      {/* Marquee Animation Styles */}
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes marquee-reverse {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+        .animate-marquee {
+          animation: marquee 30s linear infinite;
+        }
+        .animate-marquee-reverse {
+          animation: marquee-reverse 30s linear infinite;
+        }
+        .animate-marquee:hover,
+        .animate-marquee-reverse:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
     <PageLayout>
       {/* Hero Section - Clean & Focused */}
       <section className="min-h-[85vh] flex items-center pt-8">
@@ -164,28 +186,84 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Clients Section - Marquee Style */}
-      <section className="py-16 border-y border-border bg-secondary/30">
-        <div className="container-wide">
+      {/* Clients Section - Premium Marquee */}
+      <section className="py-20 md:py-28 bg-foreground text-background relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl" />
+        
+        <div className="container-wide relative">
           <Reveal>
-            <div className="text-center mb-12">
-              <span className="text-sm tracking-[0.2em] uppercase text-muted-foreground">
-                Trusted by industry leaders
+            <div className="text-center mb-16">
+              <span className="inline-block text-sm tracking-[0.3em] uppercase text-primary mb-4">
+                Our Clients
               </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-background">
+                Trusted by Industry Leaders
+              </h2>
             </div>
           </Reveal>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {clients.map((client, index) => (
-              <Reveal key={client} delay={index * 50}>
-                <div className="group text-center py-6 px-4 hover:bg-card transition-colors duration-300 cursor-default">
-                  <span className="text-sm md:text-base text-foreground font-medium group-hover:text-primary transition-colors">
-                    {client}
-                  </span>
+          {/* Animated Marquee - First Row */}
+          <div className="relative mb-4 overflow-hidden">
+            <div className="absolute left-0 top-0 w-24 h-full bg-gradient-to-r from-foreground to-transparent z-10" />
+            <div className="absolute right-0 top-0 w-24 h-full bg-gradient-to-l from-foreground to-transparent z-10" />
+            <div className="flex animate-marquee">
+              {[...clients, ...clients].map((client, index) => (
+                <div 
+                  key={`${client}-${index}`}
+                  className="flex-shrink-0 mx-3"
+                >
+                  <div className="px-6 py-4 border border-background/10 bg-background/5 backdrop-blur-sm hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 cursor-default">
+                    <span className="text-sm md:text-base text-background/90 font-medium whitespace-nowrap">
+                      {client}
+                    </span>
+                  </div>
                 </div>
-              </Reveal>
-            ))}
+              ))}
+            </div>
           </div>
+          
+          {/* Animated Marquee - Second Row (Reverse) */}
+          <div className="relative overflow-hidden">
+            <div className="absolute left-0 top-0 w-24 h-full bg-gradient-to-r from-foreground to-transparent z-10" />
+            <div className="absolute right-0 top-0 w-24 h-full bg-gradient-to-l from-foreground to-transparent z-10" />
+            <div className="flex animate-marquee-reverse">
+              {[...clients.slice().reverse(), ...clients.slice().reverse()].map((client, index) => (
+                <div 
+                  key={`${client}-reverse-${index}`}
+                  className="flex-shrink-0 mx-3"
+                >
+                  <div className="px-6 py-4 border border-background/10 bg-background/5 backdrop-blur-sm hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 cursor-default">
+                    <span className="text-sm md:text-base text-background/90 font-medium whitespace-nowrap">
+                      {client}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Stats or Trust Indicators */}
+          <Reveal delay={200}>
+            <div className="mt-16 pt-12 border-t border-background/10">
+              <div className="grid grid-cols-3 gap-8 text-center">
+                <div>
+                  <span className="block text-4xl md:text-5xl font-bold text-primary mb-2">20+</span>
+                  <span className="text-sm text-background/60 uppercase tracking-wider">Years Experience</span>
+                </div>
+                <div>
+                  <span className="block text-4xl md:text-5xl font-bold text-primary mb-2">1000+</span>
+                  <span className="text-sm text-background/60 uppercase tracking-wider">Engagements</span>
+                </div>
+                <div>
+                  <span className="block text-4xl md:text-5xl font-bold text-primary mb-2">100%</span>
+                  <span className="text-sm text-background/60 uppercase tracking-wider">Commitment</span>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -294,6 +372,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-    </PageLayout>
+      </PageLayout>
+    </>
   );
 }
