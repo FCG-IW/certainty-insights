@@ -104,16 +104,13 @@ export default function CertificationsPage() {
         </div>
       </section>
 
-      {/* Statement */}
-      <section className="py-16 border-t border-border">
-        <div className="container-wide">
-          <Reveal>
-            <p className="text-center text-lg text-muted-foreground max-w-3xl mx-auto">
-              Headquartered in North Carolina and serving clients nationwide.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      <StatementSection label="About">
+        <>
+          <p className="text-center text-lg text-muted-foreground max-w-3xl mx-auto">
+            Headquartered in North Carolina and serving clients nationwide.
+          </p>
+        </>
+      </StatementSection>
     </PageLayout>
   );
 }

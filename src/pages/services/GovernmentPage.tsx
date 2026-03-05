@@ -143,27 +143,13 @@ export default function GovernmentPage() {
         </div>
       </section>
 
-      {/* Mission Statement - Full Width */}
-      <section className="py-24 md:py-32 relative">
-        <div className="container-wide">
-          <div className="max-w-4xl">
-            <Reveal>
-              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-8">
-                Our Mission
-              </span>
-            </Reveal>
-            <Reveal delay={100}>
-              <p className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.15] text-foreground">
-                We verify regulatory compliance and contract performance of{" "}
-                <span className="text-primary">vendors</span>,{" "}
-                <span className="text-primary">grantees</span>, and{" "}
-                <span className="text-primary">awardees</span>—strengthening 
-                accountability and safeguarding taxpayer dollars.
-              </p>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      <StatementSection label="Our Mission">
+        <>
+          <p className="text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.15] text-foreground">
+            We verify regulatory compliance and contract performance of <span className="text-primary">vendors</span>, <span className="text-primary">grantees</span>, and <span className="text-primary">awardees</span> — strengthening accountability and safeguarding taxpayer dollars.
+          </p>
+        </>
+      </StatementSection>
 
       {/* Services - Bento Grid */}
       <section className="py-24 md:py-32 bg-secondary/30">

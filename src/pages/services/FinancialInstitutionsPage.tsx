@@ -1,5 +1,6 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
+import StatementSection from "@/components/ui/StatementSection";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -55,36 +56,16 @@ export default function FinancialInstitutionsPage() {
         </div>
       </section>
 
-      {/* Statement */}
-      <section className="py-20 md:py-28 bg-foreground text-background relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/4 h-full bg-primary/20" />
-        <div className="container-wide relative">
-          <div className="grid lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-2">
-              <Reveal>
-                <span className="text-sm tracking-[0.2em] uppercase text-primary">Expertise</span>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-8">
-              <Reveal delay={100}>
-                <p className="text-2xl md:text-3xl leading-snug font-light">
-                  We have demonstrated success in{" "}
-                  <span className="text-primary font-medium">asset-based lending</span>,{" "}
-                  <span className="text-primary font-medium">collateral field examinations</span>,{" "}
-                  corporate loan fraud investigations, workout support, and other agreed-upon 
-                  procedures.
-                </p>
-              </Reveal>
-              <Reveal delay={200}>
-                <p className="text-lg text-background/70 mt-8 leading-relaxed">
-                  Helping lenders, commercial banks, and independent financial institutions 
-                  protect their investments and make confident, well-supported decisions.
-                </p>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StatementSection label="Expertise">
+        <>
+          <p className="text-2xl md:text-3xl leading-snug font-light">
+            We have demonstrated success in <span className="text-primary font-medium">asset-based lending</span>, <span className="text-primary font-medium">collateral field examinations</span>, corporate loan fraud investigations, workout support, and other agreed-upon procedures.
+          </p>
+          <p className="text-lg text-background/70 mt-8 leading-relaxed">
+            Helping lenders, commercial banks, and independent financial institutions protect their investments and make confident, well-supported decisions.
+          </p>
+        </>
+      </StatementSection>
 
       {/* Services Grid */}
       <section className="py-24 md:py-32">

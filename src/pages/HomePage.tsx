@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import interlockGraphic from "@/assets/interlock-graphic.png";
 import { Reveal, useParallax } from "@/hooks/useScrollReveal";
+import Timeline from "@/components/ui/Timeline";
+import StatementSection from "@/components/ui/StatementSection";
 
 const clients = [
   "Asset-Based Lenders",
@@ -38,7 +40,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Marquee & Mesh Gradient Animation Styles */}
+      {/* Marquee Animation Styles */}
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
@@ -57,30 +59,6 @@ export default function HomePage() {
         .animate-marquee:hover,
         .animate-marquee-reverse:hover {
           animation-play-state: paused;
-        }
-        @keyframes mesh-drift-1 {
-          0%, 100% { transform: translate(0%, 0%) scale(1); }
-          25% { transform: translate(15%, -20%) scale(1.1); }
-          50% { transform: translate(-10%, 15%) scale(0.95); }
-          75% { transform: translate(20%, 10%) scale(1.05); }
-        }
-        @keyframes mesh-drift-2 {
-          0%, 100% { transform: translate(0%, 0%) scale(1.05); }
-          25% { transform: translate(-20%, 10%) scale(0.9); }
-          50% { transform: translate(15%, -15%) scale(1.1); }
-          75% { transform: translate(-5%, 20%) scale(1); }
-        }
-        @keyframes mesh-drift-3 {
-          0%, 100% { transform: translate(0%, 0%) scale(0.95); }
-          25% { transform: translate(10%, 15%) scale(1.1); }
-          50% { transform: translate(-20%, -10%) scale(1); }
-          75% { transform: translate(15%, -20%) scale(0.9); }
-        }
-        @keyframes mesh-drift-4 {
-          0%, 100% { transform: translate(0%, 0%) scale(1); }
-          25% { transform: translate(-15%, -15%) scale(1.05); }
-          50% { transform: translate(20%, 10%) scale(0.9); }
-          75% { transform: translate(-10%, 20%) scale(1.1); }
         }
       `}</style>
     <PageLayout>
@@ -101,9 +79,9 @@ export default function HomePage() {
               
               <Reveal delay={100}>
                 <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
-                  When making informed credit decisions, you need accurate and reliable 
-                  information about an organization's financial or non-financial status. 
-                  That's where FCG comes in.
+                  When making informed credit decisions, you need accurate
+                  and reliable information about an organization's financial or
+                  non-financial status. That's where FCG comes in.
                 </p>
               </Reveal>
               
@@ -146,66 +124,14 @@ export default function HomePage() {
       </section>
 
       {/* Statement Section - Magazine Style */}
-      <section className="py-32 md:py-40 bg-foreground text-background relative overflow-hidden">
-        {/* Animated Green Mesh Gradient */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div 
-            className="absolute w-[600px] h-[600px] rounded-full blur-[120px] opacity-[0.35]"
-            style={{ 
-              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
-              top: '-10%', right: '0%',
-              animation: 'mesh-drift-1 18s ease-in-out infinite'
-            }}
-          />
-          <div 
-            className="absolute w-[500px] h-[500px] rounded-full blur-[100px] opacity-[0.3]"
-            style={{ 
-              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
-              bottom: '-15%', left: '5%',
-              animation: 'mesh-drift-2 22s ease-in-out infinite'
-            }}
-          />
-          <div 
-            className="absolute w-[450px] h-[450px] rounded-full blur-[130px] opacity-[0.25]"
-            style={{ 
-              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
-              top: '20%', left: '35%',
-              animation: 'mesh-drift-3 25s ease-in-out infinite'
-            }}
-          />
-          <div 
-            className="absolute w-[400px] h-[400px] rounded-full blur-[110px] opacity-[0.3]"
-            style={{ 
-              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
-              top: '40%', right: '25%',
-              animation: 'mesh-drift-4 20s ease-in-out infinite'
-            }}
-          />
-        </div>
-        <div className="container-wide relative">
-          <div className="grid lg:grid-cols-12 gap-12">
-            <div className="lg:col-span-2">
-              <Reveal>
-                <span className="text-sm tracking-[0.2em] uppercase text-primary">About</span>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-8">
-              <Reveal delay={100}>
-                <p className="text-2xl md:text-3xl lg:text-4xl leading-snug font-light">
-                  Over two decades of{" "}
-                  <span className="text-primary font-medium">deep analytical and accounting expertise</span>,{" "}
-                  diplomatic and consultative approach, and{" "}
-                  <span className="text-primary font-medium">relentless work ethic</span>. We are committed to 
-                  building trust through transparency and strong communication, helping clients navigate 
-                  complex commercial lending, investing, and government contracting transactions.
-                </p>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      <StatementSection label="About">
+        Over the course of more than two decades of{" "}
+        <span className="text-primary font-medium">deep analytical and accounting expertise</span>,{" "}
+        <span className="text-primary font-medium">diplomatic and consultative approach</span>, and{" "}
+        <span className="text-primary font-medium">relentless work ethic</span>. We are committed to building trust through transparency and strong communication processes, helping our clients and their customers navigate complex commercial lending, investing and government contracting transactions successfully.
+      </StatementSection>
 
-      {/* Values Section - Numbered Editorial */}
+      {/* Values Section - Timeline-style Our Approach */}
       <section className="py-24 md:py-32">
         <div className="container-wide">
           <Reveal>
@@ -213,7 +139,7 @@ export default function HomePage() {
               <h2 className="text-4xl md:text-5xl font-bold text-foreground">
                 Our Approach
               </h2>
-              <Link 
+              <Link
                 to="/about/approach"
                 className="hidden md:flex items-center gap-2 text-sm font-medium text-primary hover:underline"
               >
@@ -221,26 +147,8 @@ export default function HomePage() {
               </Link>
             </div>
           </Reveal>
-          
-          <div className="grid md:grid-cols-3 gap-0 border-t border-border">
-            {values.map((value, index) => (
-              <Reveal key={value.title} delay={index * 100}>
-                <div className="group border-b md:border-b-0 md:border-r last:border-r-0 border-border p-8 md:p-10 hover:bg-secondary/50 transition-colors duration-500 cursor-default">
-                  <div className="flex items-start justify-between mb-8">
-                    <span className="text-6xl md:text-7xl font-bold text-primary/20 group-hover:text-primary/40 transition-colors">
-                      {value.number}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
-                    {value.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+
+          <Timeline steps={values} />
         </div>
       </section>
 
@@ -308,15 +216,45 @@ export default function HomePage() {
             <div className="mt-16 pt-12 border-t border-background/10">
               <div className="grid grid-cols-3 gap-8 text-center">
                 <div>
-                  <span className="block text-4xl md:text-5xl font-bold text-primary mb-2">20+</span>
+                  <span
+                    className="block text-primary mb-2"
+                    style={{
+                      fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                      fontWeight: 700,
+                      fontSize: "80px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    20+
+                  </span>
                   <span className="text-sm text-background/60 uppercase tracking-wider">Years Experience</span>
                 </div>
                 <div>
-                  <span className="block text-4xl md:text-5xl font-bold text-primary mb-2">1000+</span>
+                  <span
+                    className="block text-primary mb-2"
+                    style={{
+                      fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                      fontWeight: 700,
+                      fontSize: "80px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    1000+
+                  </span>
                   <span className="text-sm text-background/60 uppercase tracking-wider">Engagements</span>
                 </div>
                 <div>
-                  <span className="block text-4xl md:text-5xl font-bold text-primary mb-2">100%</span>
+                  <span
+                    className="block text-primary mb-2"
+                    style={{
+                      fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+                      fontWeight: 700,
+                      fontSize: "80px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    100%
+                  </span>
                   <span className="text-sm text-background/60 uppercase tracking-wider">Commitment</span>
                 </div>
               </div>
@@ -325,43 +263,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About CTA Section */}
-      <section className="py-24 md:py-32 border-t border-border">
-        <div className="container-wide">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-7">
-              <Reveal>
-                <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
-                  About FCG
-                </span>
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                  Built on Two Decades of Trust
-                </h2>
-                <p className="text-lg text-muted-foreground leading-relaxed max-w-xl">
-                  Learn how our foundation on the industry's three Cs—Competent, 
-                  Collaborative, and Committed—has guided over a thousand successful engagements.
-                </p>
-              </Reveal>
-            </div>
-            <div className="lg:col-span-5">
-              <Reveal delay={100}>
-                <Link
-                  to="/about/history"
-                  className="group flex items-center justify-between p-8 bg-secondary/50 hover:bg-secondary transition-colors"
-                >
-                  <div>
-                    <span className="block text-2xl font-bold text-foreground group-hover:text-primary transition-colors">
-                      Our History
-                    </span>
-                    <span className="text-muted-foreground">Discover our story</span>
-                  </div>
-                  <ArrowRight className="h-6 w-6 text-primary group-hover:translate-x-2 transition-transform" />
-                </Link>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* CTA Section - Split Design */}
       <section className="py-24 md:py-32">

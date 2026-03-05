@@ -1,5 +1,6 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
+import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight, Mail, Linkedin } from "lucide-react";
 
 const credentials = [
@@ -64,9 +65,8 @@ export default function FounderPage() {
         </div>
       </section>
 
-      {/* Expertise Bar */}
-      <section className="py-8 bg-foreground text-background">
-        <div className="container-wide">
+      <StatementSection label="Expertise">
+        <>
           <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">
             {expertise.map((item, index) => (
               <Reveal key={item} delay={index * 50}>
@@ -76,8 +76,8 @@ export default function FounderPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </>
+      </StatementSection>
 
       {/* Bio Content */}
       <section className="py-24 md:py-32">
