@@ -1,4 +1,6 @@
 import { PageLayout } from "@/components/layout";
+import StatementSection from "@/components/ui/StatementSection";
+
 import { Reveal } from "@/hooks/useScrollReveal";
 
 const certificationBadges = [

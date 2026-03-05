@@ -27,17 +27,17 @@ const App = () => (
           <Route path="/" element={<HomePage />} />
           
           {/* About Routes */}
-          <Route path="/about/history" element={<HistoryPage />} />
+          {/* <Route path="/about/history" element={<HistoryPage />} />
           <Route path="/about/approach" element={<ApproachPage />} />
           <Route path="/about/founder" element={<FounderPage />} />
-          <Route path="/about/certifications" element={<CertificationsPage />} />
+          <Route path="/about/certifications" element={<CertificationsPage />} /> */}
           
           {/* Services Routes */}
-          <Route path="/services/financial-institutions" element={<FinancialInstitutionsPage />} />
-          <Route path="/services/government" element={<GovernmentPage />} />
+          {/* <Route path="/services/financial-institutions" element={<FinancialInstitutionsPage />} />
+          <Route path="/services/government" element={<GovernmentPage />} /> */}
           
           {/* Contact */}
-          <Route path="/contact" element={<ContactPage />} />
+          {/* <Route path="/contact" element={<ContactPage />} /> */}
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />

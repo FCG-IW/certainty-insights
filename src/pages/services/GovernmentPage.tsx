@@ -1,5 +1,7 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
+import StatementSection from "@/components/ui/StatementSection";
+
 import { 
   ArrowRight, 
   FileCheck, 
