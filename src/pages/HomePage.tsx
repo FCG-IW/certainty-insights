@@ -38,7 +38,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Marquee Animation Styles */}
+      {/* Marquee & Mesh Gradient Animation Styles */}
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(0); }
@@ -57,6 +57,30 @@ export default function HomePage() {
         .animate-marquee:hover,
         .animate-marquee-reverse:hover {
           animation-play-state: paused;
+        }
+        @keyframes mesh-drift-1 {
+          0%, 100% { transform: translate(0%, 0%) scale(1); }
+          25% { transform: translate(15%, -20%) scale(1.1); }
+          50% { transform: translate(-10%, 15%) scale(0.95); }
+          75% { transform: translate(20%, 10%) scale(1.05); }
+        }
+        @keyframes mesh-drift-2 {
+          0%, 100% { transform: translate(0%, 0%) scale(1.05); }
+          25% { transform: translate(-20%, 10%) scale(0.9); }
+          50% { transform: translate(15%, -15%) scale(1.1); }
+          75% { transform: translate(-5%, 20%) scale(1); }
+        }
+        @keyframes mesh-drift-3 {
+          0%, 100% { transform: translate(0%, 0%) scale(0.95); }
+          25% { transform: translate(10%, 15%) scale(1.1); }
+          50% { transform: translate(-20%, -10%) scale(1); }
+          75% { transform: translate(15%, -20%) scale(0.9); }
+        }
+        @keyframes mesh-drift-4 {
+          0%, 100% { transform: translate(0%, 0%) scale(1); }
+          25% { transform: translate(-15%, -15%) scale(1.05); }
+          50% { transform: translate(20%, 10%) scale(0.9); }
+          75% { transform: translate(-10%, 20%) scale(1.1); }
         }
       `}</style>
     <PageLayout>
@@ -123,7 +147,41 @@ export default function HomePage() {
 
       {/* Statement Section - Magazine Style */}
       <section className="py-32 md:py-40 bg-foreground text-background relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-primary/10" />
+        {/* Animated Green Mesh Gradient */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div 
+            className="absolute w-[500px] h-[500px] rounded-full blur-[120px] opacity-[0.07]"
+            style={{ 
+              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
+              top: '10%', right: '5%',
+              animation: 'mesh-drift-1 18s ease-in-out infinite'
+            }}
+          />
+          <div 
+            className="absolute w-[400px] h-[400px] rounded-full blur-[100px] opacity-[0.09]"
+            style={{ 
+              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
+              bottom: '0%', left: '10%',
+              animation: 'mesh-drift-2 22s ease-in-out infinite'
+            }}
+          />
+          <div 
+            className="absolute w-[350px] h-[350px] rounded-full blur-[130px] opacity-[0.06]"
+            style={{ 
+              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
+              top: '30%', left: '40%',
+              animation: 'mesh-drift-3 25s ease-in-out infinite'
+            }}
+          />
+          <div 
+            className="absolute w-[300px] h-[300px] rounded-full blur-[110px] opacity-[0.08]"
+            style={{ 
+              background: 'radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)',
+              top: '50%', right: '30%',
+              animation: 'mesh-drift-4 20s ease-in-out infinite'
+            }}
+          />
+        </div>
         <div className="container-wide relative">
           <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-2">
