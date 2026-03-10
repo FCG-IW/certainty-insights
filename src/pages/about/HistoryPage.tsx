@@ -1,5 +1,7 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
+import StatementSection from "@/components/ui/StatementSection";
+import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
 import { ArrowRight } from "lucide-react";
 
 const threeCs = [
@@ -50,7 +52,7 @@ export default function HistoryPage() {
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light">
+                <p className="text-xl text-muted-foreground font-medium text-right">
                   Over two decades of trusted expertise in financial compliance and risk management.
                 </p>
               </Reveal>
@@ -59,9 +61,9 @@ export default function HistoryPage() {
         </div>
       </section>
 
-      {/* Stats Bar */}
-      <section className="py-12 bg-foreground text-background">
-        <div className="container-wide">
+      
+        <StatementSection  compact>
+        <>
           <div className="grid grid-cols-3 gap-8 text-center">
             {milestones.map((item, index) => (
               <Reveal key={item.label} delay={index * 100}>
@@ -76,8 +78,8 @@ export default function HistoryPage() {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </>
+      </StatementSection>
 
       {/* Story Content */}
       <section className="py-24 md:py-32">
@@ -87,7 +89,7 @@ export default function HistoryPage() {
             <div className="lg:col-span-3">
               <Reveal>
                 <div className="sticky top-32">
-                  <span className="text-sm tracking-[0.2em] uppercase text-muted-foreground">
+                  <span className="text-sm tracking-[0.2em] uppercase text-muted-foreground font-medium">
                     Our Story
                   </span>
                 </div>
@@ -97,31 +99,24 @@ export default function HistoryPage() {
             {/* Main Content */}
             <div className="lg:col-span-7 space-y-8">
               <Reveal delay={100}>
-                <p className="text-2xl md:text-3xl leading-relaxed text-foreground font-light">
-                  Financial Compliance Group was founded in 2002 to provide banks and 
-                  independent financial services organizations with{" "}
-                  <span className="text-primary font-medium">trusted experts</span> in 
-                  field examinations, collateral reviews, and forensic investigations.
-                </p>
+                <div className="text-center lg:text-left">
+                  <img src={bannerMark} alt="FCG" className="mx-auto lg:mx-0 w-28 h-auto mb-6" />
+                  <p className="text-2xl md:text-3xl leading-relaxed text-foreground font-medium mb-10">
+                    Financial Compliance Group was founded in 2002 to provide banks and 
+                    independent financial services organizations with{" "}
+                    <span className="text-primary font-bold">trusted experts</span> in 
+                    field examinations, collateral reviews, and forensic investigations,{" "}
+                    <span className="text-primary font-bold">Helping them manage risk, protect their investments, and maintain the integrity of their loan portfolios.</span> 
+                  </p>
+                  <p className="text-2xl md:text-3xl leading-relaxed text-foreground font-medium">
+                    Over a thousand engagements since then, the firm’s services have expanded to help government agencies mitigate risk when analyzing vendors, grantees, and awardees.
+                    </p>
+                </div>
               </Reveal>
               
-              <Reveal delay={200}>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Helping them manage risk, protect their investments, and maintain the 
-                  integrity of their loan portfolios. Over a thousand engagements since 
-                  then, the firm's services have expanded to help government agencies 
-                  mitigate risk when analyzing vendors, grantees, and awardees.
-                </p>
-              </Reveal>
+
               
-              <Reveal delay={300}>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  Over a long career, our founder saw a need for expert professionals 
-                  who are committed to achieving client and transaction success. She was 
-                  inspired to launch the firm built on the foundation of the industry's 
-                  three "Cs" for sound lending decisions.
-                </p>
-              </Reveal>
+    
             </div>
           </div>
         </div>
@@ -131,36 +126,47 @@ export default function HistoryPage() {
       <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container-wide">
           <Reveal>
-            <div className="mb-16">
-              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
+                                              <div className="mb-4">
+
+              <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4 font-bold  ">
                 Our Foundation
               </span>
               <h2 className="text-4xl md:text-5xl font-bold text-foreground">
                 The Three Cs
               </h2>
-            </div>
+                                          </div>
+
           </Reveal>
-          
-          <div className="space-y-0 border-t border-border">
+                    <Reveal delay={300}>
+                                  <div className="mb-16">
+
+                <p className="text-2xl md:text-3xl leading-relaxed text-foreground font-medium">
+                  Over a long career, our founder saw a need for expert professionals who are committed to achieving client and transaction success. She was inspired to launch the firm built on the foundation of the industry's three "Cs" for sound lending decisions.
+                </p>
+                            </div>
+
+              </Reveal>
+          <div className="grid md:grid-cols-3 gap-6 items-stretch">
             {threeCs.map((item, index) => (
-              <Reveal key={item.title} delay={index * 100}>
-                <div className="group grid md:grid-cols-12 gap-8 py-12 border-b border-border hover:bg-card transition-colors duration-500">
-                  <div className="md:col-span-2">
-                    <span className="text-5xl md:text-6xl font-bold text-primary/30 group-hover:text-primary/50 transition-colors">
-                      {item.number}
-                    </span>
+              <Reveal key={item.title} delay={index * 100} className="h-full">
+                <article
+                  role="article"
+                  className="group bg-card border border-border rounded-lg p-8 hover:bg-primary/5 hover:border-primary transition-colors duration-300 h-full flex flex-col"
+                >
+                  <div className="mb-6">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 group-hover:bg-primary transition-colors">
+                      <span className="text-xl font-bold text-primary">{item.number}</span>
+                    </div>
                   </div>
-                  <div className="md:col-span-3">
-                    <h3 className="text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <div className="md:col-span-7">
-                    <p className="text-lg text-muted-foreground leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
+
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-foreground transition-colors">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-lg text-muted-foreground leading-relaxed flex-grow">
+                    {item.description}
+                  </p>
+                </article>
               </Reveal>
             ))}
           </div>

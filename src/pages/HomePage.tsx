@@ -213,15 +213,15 @@ export default function HomePage() {
           
           {/* Stats or Trust Indicators */}
           <Reveal delay={200}>
-            <div className="mt-16 pt-12 border-t border-background/10">
-              <div className="grid grid-cols-3 gap-8 text-center">
+              <div className="mt-16 pt-12 border-t border-background/10">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div>
                   <span
                     className="block text-primary mb-2"
                     style={{
                       fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
                       fontWeight: 700,
-                      fontSize: "80px",
+                      fontSize: "clamp(48px, 12vw, 80px)",
                       lineHeight: 1,
                     }}
                   >
@@ -235,7 +235,7 @@ export default function HomePage() {
                     style={{
                       fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
                       fontWeight: 700,
-                      fontSize: "80px",
+                      fontSize: "clamp(48px, 12vw, 80px)",
                       lineHeight: 1,
                     }}
                   >
@@ -249,7 +249,7 @@ export default function HomePage() {
                     style={{
                       fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
                       fontWeight: 700,
-                      fontSize: "80px",
+                      fontSize: "clamp(48px, 12vw, 80px)",
                       lineHeight: 1,
                     }}
                   >

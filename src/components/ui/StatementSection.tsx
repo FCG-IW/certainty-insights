@@ -2,8 +2,9 @@ import { type ReactNode, useRef, useCallback } from "react";
 import { Reveal } from "@/hooks/useScrollReveal";
 
 interface StatementSectionProps {
-  label: string;
+  label?: string;
   children: ReactNode;
+  compact?: boolean;
 }
 
 /*
@@ -50,7 +51,7 @@ const meshBlobs = [
   { size: 400, blur: 110, opacity: 0.5,  top: "50%",  left: "75%",  anim: "blob-roam-4 44s ease-in-out infinite" },
 ];
 
-export default function StatementSection({ label, children }: StatementSectionProps) {
+export default function StatementSection({ label, children, compact = false }: StatementSectionProps) {
   const blobsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
@@ -76,7 +77,10 @@ export default function StatementSection({ label, children }: StatementSectionPr
 
   return (
     <section
-      className="py-32 md:py-40 bg-foreground text-background relative overflow-hidden"
+      className={
+        (compact ? "py-12 md:py-16 " : "py-32 md:py-40 ") +
+        "bg-foreground text-background relative overflow-hidden"
+      }
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -107,17 +111,19 @@ export default function StatementSection({ label, children }: StatementSectionPr
 
       <div className="container-wide relative">
         <div className="grid lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-2">
-            <Reveal>
-              <span className="text-sm tracking-[0.2em] uppercase text-primary font-bold">
-                {label}
-              </span>
-            </Reveal>
-          </div>
-          <div className="lg:col-span-10">
+          {label ? (
+            <div className="lg:col-span-2">
+              <Reveal>
+                <span className="text-sm tracking-[0.2em] uppercase text-primary font-bold">
+                  {label}
+                </span>
+              </Reveal>
+            </div>
+          ) : null}
+          <div className={label ? "lg:col-span-10" : "lg:col-span-12 text-center"}>
             <Reveal delay={100}>
               <div
-                className="space-y-6 statement-body"
+                className={"space-y-6 statement-body" + (label ? "" : " mx-auto")}
                 style={{ fontSize: "32px", lineHeight: 1.45 }}
               >
                 {children}
