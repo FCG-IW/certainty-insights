@@ -16,7 +16,6 @@ const aboutLinks = [
   { title: "Our History", href: "/about/history" },
   { title: "Our Approach", href: "/about/approach" },
   { title: "Our Founder", href: "/about/founder" },
-  { title: "Our Certifications", href: "/about/certifications" },
 ];
 
 const servicesLinks = [

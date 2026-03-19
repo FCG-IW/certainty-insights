@@ -2,6 +2,9 @@ import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
+import badgeIcon from "@/assets/carbon_badge.svg";
+import handshakeIcon from "@/assets/fluent_handshake-20-regular.svg";
+import anchorIcon from "@/assets/material-symbols_anchor.svg";
 import { ArrowRight } from "lucide-react";
 
 const threeCs = [
@@ -30,6 +33,8 @@ const milestones = [
   { value: "1,000+", label: "Engagements" },
   { value: "20+", label: "Years of Service" },
 ];
+
+const threeCIcons = [badgeIcon, handshakeIcon, anchorIcon];
 
 export default function HistoryPage() {
   return (
@@ -148,25 +153,31 @@ export default function HistoryPage() {
               </Reveal>
           <div className="grid md:grid-cols-3 gap-6 items-stretch">
             {threeCs.map((item, index) => (
-              <Reveal key={item.title} delay={index * 100} className="h-full">
-                <article
-                  role="article"
-                  className="group bg-card border border-border rounded-lg p-8 hover:bg-primary/5 hover:border-primary transition-colors duration-300 h-full flex flex-col"
-                >
-                  <div className="mb-6">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center bg-primary/5 group-hover:bg-primary transition-colors">
-                      <span className="text-xl font-bold text-primary">{item.number}</span>
+              <Reveal key={item.title} delay={index * 100} className="h-[460px]">
+                <div className="h-[460px]">
+                  <article
+                    role="article"
+                    className="group bg-card border border-border rounded-lg p-8 hover:bg-primary/5 hover:border-primary transition-colors duration-300 h-[460px] flex flex-col"
+                  >
+                    <div className="mb-12">
+                      <div className="w-20 h-20  flex items-center justify-center   transition-colors">
+                        <img
+                          src={threeCIcons[index]}
+                          alt={`${item.title} icon`}
+                          className="w-24 h-24"
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-foreground transition-colors">
-                    {item.title}
-                  </h3>
+                    <h3 className="text-2xl font-bold mb-4 group-hover:text-foreground transition-colors">
+                      {item.title}
+                    </h3>
 
-                  <p className="text-lg text-muted-foreground leading-relaxed flex-grow">
-                    {item.description}
-                  </p>
-                </article>
+                    <p className="text-lg text-muted-foreground leading-relaxed flex-grow">
+                      {item.description}
+                    </p>
+                  </article>
+                </div>
               </Reveal>
             ))}
           </div>

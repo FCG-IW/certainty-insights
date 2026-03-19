@@ -5,8 +5,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, Mail, CheckCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, Mail } from "lucide-react";
 import { Reveal } from "@/hooks/useScrollReveal";
+import interlockGraphic from "@/assets/interlock-graphic.png";
+import employmentImage from "@/assets/employment.png";
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -35,10 +37,10 @@ export default function ContactPage() {
   return (
     <PageLayout>
       {/* Hero Section */}
-      <section className="pt-20 pb-16 md:pt-32 md:pb-24">
+      <section className="bg-[#F4F4F4] pt-20 pb-16 md:pt-32 md:pb-24">
         <div className="container-wide">
           <div className="grid lg:grid-cols-12 gap-8 items-end">
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-7">
               <Reveal>
                 <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase text-primary border-l-2 border-primary pl-4 mb-8">
                   Contact
@@ -47,13 +49,13 @@ export default function ContactPage() {
               <Reveal delay={100}>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-foreground">
                   Questions?<br />
-                  <span className="text-primary">We're ready.</span>
+                  We're ready to help.
                 </h1>
               </Reveal>
             </div>
-            <div className="lg:col-span-4">
+            <div className="lg:col-span-5">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light">
+                <p className="text-lg text-muted-foreground font-medium text-right">
                   Complete the form below, and an FCG team member will contact you directly.
                 </p>
               </Reveal>
@@ -63,27 +65,26 @@ export default function ContactPage() {
       </section>
 
       {/* Contact Grid */}
-      <section className="pb-24 md:pb-32">
+      <section className="bg-[#F4F4F4] py-20 md:py-24">
         <div className="container-wide">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* Form */}
             <div className="lg:col-span-7">
               {isSubmitted ? (
                 <Reveal>
-                  <div className="bg-foreground text-background p-12 md:p-16">
+                  <div className="bg-[#FFFFFF] border border-[#E6E6E6] p-12 md:p-16">
                     <div className="flex items-center gap-4 mb-8">
                       <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center">
                         <CheckCircle className="h-8 w-8 text-foreground" />
                       </div>
                     </div>
-                    <h3 className="text-3xl md:text-4xl font-bold mb-4">Message Sent</h3>
-                    <p className="text-background/70 text-lg mb-8">
+                    <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Message Sent</h3>
+                    <p className="text-muted-foreground text-lg mb-8">
                       Thank you for reaching out. We'll get back to you as soon as possible.
                     </p>
                     <Button 
                       onClick={() => setIsSubmitted(false)}
-                      variant="outline"
-                      className="border-background/30 text-background hover:bg-background/10"
+                      className="bg-foreground text-background hover:bg-primary transition-colors"
                     >
                       Send Another Message
                     </Button>
@@ -171,41 +172,59 @@ export default function ContactPage() {
             </div>
 
             {/* Sidebar */}
-            <div className="lg:col-span-5 space-y-8">
+            <div className="lg:col-span-5">
               <Reveal delay={200}>
-                <div className="bg-foreground text-background p-8 md:p-10">
-                  <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
-                    Immediate Assistance
-                  </span>
+                <div className="px-2 lg:px-6">
+                  <p className="text-sm md:text-base tracking-[0.2em] uppercase text-foreground font-semibold mb-3">
+                    For Immediate Assistance
+                  </p>
                   <a
                     href="tel:704-412-8440"
-                    className="block text-4xl md:text-5xl font-bold hover:text-primary transition-colors"
+                    className="block text-3xl md:text-4xl font-bold text-primary hover:opacity-90 transition-opacity"
                   >
                     704-412-8440
                   </a>
-                </div>
-              </Reveal>
-
-              <Reveal delay={300}>
-                <div className="border-2 border-foreground p-8 md:p-10">
-                  <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
-                    Employment Opportunities
-                  </span>
-                  <p className="text-muted-foreground mb-6">
-                    We recruit and retain individuals committed to partnership, 
-                    shared expertise, and client-focused success.
-                  </p>
-                  <a
-                    href="mailto:careers@financialcompliancegroup.com"
-                    className="group inline-flex items-center gap-2 text-foreground font-medium hover:text-primary transition-colors"
-                  >
-                    <Mail className="h-5 w-5" />
-                    careers@financialcompliancegroup.com
-                  </a>
+                  <div className="mt-12 md:mt-14">
+                    <img
+                      src={interlockGraphic}
+                      alt="FCG interlock graphic"
+                      className="w-full max-w-[360px]"
+                    />
+                  </div>
                 </div>
               </Reveal>
             </div>
           </div>
+
+          <Reveal delay={300}>
+            <div className="mt-20">
+              <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-foreground mb-10">
+                Employment<br />
+                Opportunities
+              </h2>
+
+              <div className="overflow-hidden rounded-[32px] bg-[#FFFFFF] border border-[#E6E6E6]">
+                <img
+                  src={employmentImage}
+                  alt="Employment opportunities"
+                  className="w-full h-auto object-cover"
+                />
+
+                <div className="bg-primary px-6 py-7 md:px-8 md:py-8">
+                  <p className="text-foreground text-xl leading-relaxed max-w-2xl mb-4">
+                    We recruit and retain individuals committed to partnership, shared expertise, and client-focused success.
+                  </p>
+                  <a
+                    href="mailto:careers@financialcompliancegroup.com"
+                    className="inline-flex items-center gap-2 text-foreground text-2xl font-medium hover:opacity-80 transition-opacity"
+                  >
+                    <Mail className="h-6 w-6" />
+                    careers@financialcompliancegroup.com
+                  </a>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
     </PageLayout>

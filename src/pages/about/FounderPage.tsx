@@ -2,6 +2,8 @@ import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight, Mail, Linkedin } from "lucide-react";
+import founderImage from "@/assets/founder.png";
+import fcgLogotypeDark from "@/assets/FCG_Logotype_Dark 1.png";
 
 const credentials = [
   "Master's Degree in Accounting and Financial Management, University of Maryland Global Campus",
@@ -9,12 +11,14 @@ const credentials = [
   "Certified Fraud Examiner (CFE)",
 ];
 
-const expertise = [
-  "Fraud Investigation",
-  "Lending Due Diligence",
-  "Forensic Financial Analysis",
-  "Compliance Consulting",
+const expertiseBadges = [
+  { label: "Fraud Investigation", x: 14, y: 8 },
+  { label: "Lending Due Diligence", x: 78, y: 41 },
+  { label: "Forensic Financial Analysis", x: 30, y: 60 },
+  { label: "Compliance Consulting", x: 56, y: 94 },
 ];
+
+const expertiseBadgeGradient = "linear-gradient(94.82deg, #000a08, #00705a)";
 
 export default function FounderPage() {
   return (
@@ -32,19 +36,19 @@ export default function FounderPage() {
               <Reveal delay={100}>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-foreground">
                   Dana Campbell<br />
-                  <span className="text-primary">Latimer, CFE</span>
+                  Latimer, CFE
                 </h1>
               </Reveal>
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light mb-6">
+                <p className="text-xl text-muted-foreground font-light text-right mb-6">
                   Founder and President with over three decades of industry experience.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
                     href="mailto:dana@fcgllc.net"
-                    className="group inline-flex items-center gap-3 bg-foreground text-background px-5 py-3 font-medium hover:bg-primary transition-colors"
+                    className="group inline-flex items-center gap-3 bg-primary text-background px-5 py-3 font-medium hover:bg-foreground transition-colors"
                   >
                     <Mail className="h-4 w-4" />
                     Connect via Email
@@ -53,7 +57,7 @@ export default function FounderPage() {
                     href="https://www.linkedin.com/in/dana-campbell-latimer-cfe-6310b45/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-3 border border-border px-5 py-3 font-medium hover:border-primary hover:text-primary transition-colors"
+                    className="group inline-flex items-center gap-3 border border-primary px-5 py-3 font-medium hover:border-border hover:text-primary transition-colors"
                   >
                     <Linkedin className="h-4 w-4" />
                     LinkedIn
@@ -65,16 +69,44 @@ export default function FounderPage() {
         </div>
       </section>
 
-      <StatementSection label="Expertise">
+      <StatementSection
+        label=""
+        backgroundImage={founderImage}
+        backgroundImageOpacity={1}
+        backgroundOverlayOpacity={0}
+        blobOpacityScale={0.5}
+        minHeight="clamp(560px, 78vh, 900px)"
+      >
         <>
-          <div className="flex flex-wrap justify-center gap-x-12 gap-y-4">
-            {expertise.map((item, index) => (
-              <Reveal key={item} delay={index * 50}>
-                <span className="text-sm md:text-base tracking-wide text-background/80">
-                  {item}
+          <div className="relative w-full h-[360px] md:h-[450px] lg:h-[520px]" style={{ fontSize: "16px", lineHeight: 1.2 }}>
+            <div className="hidden md:block absolute inset-0">
+              {expertiseBadges.map((item, index) => (
+                <span
+                  key={item.label}
+                  className="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center rounded-xl border border-primary/35 px-5 py-3 text-[18px] font-semibold tracking-wide text-background shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-[calc(50%+4px)] hover:scale-[1.03] hover:border-primary/70 hover:brightness-110 hover:shadow-[0_14px_30px_rgba(0,0,0,0.45)]"
+                  style={{
+                    left: `${item.x}%`,
+                    top: `${item.y}%`,
+                    backgroundImage: expertiseBadgeGradient,
+                  }}
+                >
+                  {item.label}
                 </span>
-              </Reveal>
-            ))}
+              ))}
+            </div>
+
+            <div className="md:hidden flex h-full flex-wrap content-center justify-center gap-4 px-2">
+              {expertiseBadges.map((item, index) => (
+                <Reveal key={`${item.label}-mobile`} delay={index * 80}>
+                  <span
+                    className="inline-flex items-center rounded-xl border border-primary/35 px-4 py-2 text-sm font-semibold tracking-wide text-background shadow-[0_8px_20px_rgba(0,0,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-primary/70 hover:brightness-110 hover:shadow-[0_12px_24px_rgba(0,0,0,0.35)]"
+                    style={{ backgroundImage: expertiseBadgeGradient }}
+                  >
+                    {item.label}
+                  </span>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </>
       </StatementSection>
@@ -83,27 +115,15 @@ export default function FounderPage() {
       <section className="py-24 md:py-32">
         <div className="container-wide">
           <div className="grid lg:grid-cols-12 gap-16">
-            {/* Photo Placeholder */}
+            {/* Brand Panel */}
             <div className="lg:col-span-4">
               <Reveal>
-                <div className="sticky top-32">
-                  <div className="aspect-[3/4] bg-gradient-to-br from-secondary to-secondary/50 relative">
-                    {/* Decorative Frame */}
-                    <div className="absolute -inset-4 border border-primary/20" />
-                    
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-6xl font-bold text-primary/20 mb-2">DCL</div>
-                        <p className="text-sm text-muted-foreground">Photo Placeholder</p>
-                      </div>
-                    </div>
-                    
-                    {/* Stats Badge */}
-                    <div className="absolute -bottom-6 -right-6 bg-foreground text-background px-6 py-4">
-                      <div className="text-3xl font-bold">30+</div>
-                      <div className="text-sm text-background/70">Years Experience</div>
-                    </div>
-                  </div>
+                <div className="h-full min-h-[260px] md:min-h-[320px] lg:min-h-[520px] flex items-center justify-center px-4 md:px-6">
+                  <img
+                    src={fcgLogotypeDark}
+                    alt="Financial Compliance Group"
+                    className="w-full max-w-[360px] h-auto object-contain"
+                  />
                 </div>
               </Reveal>
             </div>

@@ -1,32 +1,104 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight } from "lucide-react";
+import interlockGraphic from "@/assets/interlock-graphic.png";
+import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
+import logomarkGreen from "@/assets/logomark-green.png";
 
 const values = [
   {
     number: "01",
     title: "Discipline",
+    image: bannerMark,
+    imageAlt: "Discipline value visual",
     description:
       "Having performed thousands of field examinations, our seasoned, insight-driven professionals bring discipline and accountability to reduce risk and variability while promoting consistency.",
   },
   {
     number: "02",
     title: "Discovery",
+    image: bannerMark,
+    imageAlt: "Discovery value visual",
     description:
       "Through agreed-upon procedures, we help our clients identify potential risks, analyze their impact, and offer practical guidance to make confident, well-supported credit decisions.",
   },
   {
     number: "03",
     title: "Diplomacy",
+    image: bannerMark,
+    imageAlt: "Diplomacy value visual",
     description:
       "Our deep people skills and white-glove service builds trust as we balance firmness with empathy, especially in sensitive, high-stakes, or relationship-driven environments. We understand how to work across roles, cultures and personalities.",
   },
 ];
 
 export default function ApproachPage() {
+  const [activeIndex, setActiveIndex] = useState(2);
+  const [rotationSeed, setRotationSeed] = useState(0);
+  const [featuredHeight, setFeaturedHeight] = useState<number | undefined>(undefined);
+  const rightColumnRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const rotation = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % values.length);
+    }, 4800);
+
+    return () => window.clearInterval(rotation);
+  }, [rotationSeed]);
+
+  useEffect(() => {
+    const syncHeights = () => {
+      if (window.innerWidth < 1024 || !rightColumnRef.current) {
+        setFeaturedHeight(undefined);
+        return;
+      }
+
+      setFeaturedHeight(rightColumnRef.current.offsetHeight);
+    };
+
+    syncHeights();
+
+    const observer = typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver(() => syncHeights())
+      : undefined;
+
+    if (observer && rightColumnRef.current) {
+      observer.observe(rightColumnRef.current);
+    }
+
+    window.addEventListener("resize", syncHeights);
+
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", syncHeights);
+    };
+  }, [activeIndex]);
+
+  const orderedValues = useMemo(
+    () =>
+      values.map((_, offset) => {
+        const sourceIndex = (activeIndex + offset) % values.length;
+        return {
+          ...values[sourceIndex],
+          sourceIndex,
+        };
+      }),
+    [activeIndex]
+  );
+
+  const featuredValue = orderedValues[0];
+  const adjacentValues = orderedValues.slice(1);
+
   return (
     <PageLayout>
+      <style>{`
+        @keyframes approach-swap {
+          0% { opacity: 0; transform: translateY(10px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
       {/* Hero Section */}
       <section className="pt-20 pb-16 md:pt-32 md:pb-24">
         <div className="container-wide">
@@ -45,7 +117,7 @@ export default function ApproachPage() {
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light">
+                <p className="text-xl text-muted-foreground font-light text-right">
                   Partnership, shared expertise, and client-focused success at every step.
                 </p>
               </Reveal>
@@ -54,16 +126,13 @@ export default function ApproachPage() {
         </div>
       </section>
 
-      <StatementSection label="Philosophy">
-        <>
-          <p className="text-2xl md:text-3xl lg:text-4xl leading-snug font-light">
-            Our core business values are centered on <span className="text-primary font-medium">partnership</span>, <span className="text-primary font-medium">shared expertise</span>, and <span className="text-primary font-medium">client-focused success</span>.
-          </p>
-          <p className="text-lg text-background/70 mt-8 leading-relaxed">
-            We operate as collaborative team players, communicating with clients at every step while upholding the highest standards of integrity and transparency in all our interactions.
-          </p>
-        </>
-      </StatementSection>
+     <StatementSection label="Philosophy">
+            Our core business values are centered on{" "}
+            <span className="text-primary font-medium">partnership</span>,{" "}
+            <span className="text-primary font-medium">shared expertise</span>, and{" "}
+            <span className="text-primary font-medium">client-focused success</span>.{" "}
+            We operate as collaborative team players, communicating with clients at every step while upholding the highest standards of integrity and transparency in all our interactions. We  share knowledge with lenders investing across the capital structure to help connect the dots.
+          </StatementSection>
 
       {/* Values Grid */}
       <section className="py-24 md:py-32">
@@ -78,40 +147,65 @@ export default function ApproachPage() {
               </h2>
             </div>
           </Reveal>
-          
-          <div className="grid md:grid-cols-3 gap-0 border-t border-l border-border">
-            {values.map((item, index) => (
-              <Reveal key={item.title} delay={index * 100}>
-                <div className="group border-b border-r border-border p-10 md:p-12 hover:bg-primary/5 transition-colors duration-500 h-full">
-                  <div className="mb-8">
-                    <span className="text-7xl md:text-8xl font-bold text-primary/20 group-hover:text-primary/40 transition-colors">
-                      {item.number}
-                    </span>
-                  </div>
-                  <h3 className="text-2xl md:text-3xl font-bold mb-6 text-foreground group-hover:text-primary transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {item.description}
-                  </p>
+
+          <div
+            key={activeIndex}
+            className="grid lg:grid-cols-12 gap-4 md:gap-6 items-stretch animate-[approach-swap_550ms_ease]"
+          >
+            <Reveal delay={100} className="lg:col-span-8 h-full">
+              <article
+                className="h-full border border-primary/40 bg-card p-7 md:p-9 flex flex-col"
+                style={{ height: featuredHeight ? `${featuredHeight}px` : undefined }}
+              >
+                <div className="mb-2">
+                  <span className="inline-block text-xs tracking-[0.24em] uppercase text-primary/80 font-medium">
+                    {featuredValue.number}
+                  </span>
                 </div>
-              </Reveal>
-            ))}
+                <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-5">{featuredValue.title}</h3>
+                <p className="text-lg text-muted-foreground leading-relaxed mb-6 max-w-4xl">
+                  {featuredValue.description}
+                </p>
+                <div className="rounded-md overflow-hidden border-b-4 border-primary bg-secondary/40 mt-2 flex-1 min-h-[260px]">
+                  <img
+                    src={featuredValue.image}
+                    alt={featuredValue.imageAlt}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </article>
+            </Reveal>
+
+            <div ref={rightColumnRef} className="lg:col-span-4 grid grid-rows-2 gap-4 md:gap-6">
+              {adjacentValues.map((item, index) => (
+                <Reveal key={item.title} delay={200 + index * 100} className="h-full">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveIndex(item.sourceIndex);
+                      setRotationSeed((seed) => seed + 1);
+                    }}
+                    className="h-full w-full border border-border bg-primary/10 p-7 md:p-9 flex flex-col text-left hover:bg-primary/15 hover:border-primary/40 transition-colors duration-300"
+                    aria-label={`Show ${item.title} as featured value`}
+                  >
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <span className="inline-block text-xs tracking-[0.24em] uppercase text-primary/80 font-medium mt-1">
+                        {item.number}
+                      </span>
+                      <div className="w-14 h-14 rounded-md bg-card/70 border border-border/70 p-2 flex items-center justify-center shrink-0">
+                        <img src={item.image} alt={item.imageAlt} className="w-full h-full object-contain" />
+                      </div>
+                    </div>
+                    <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-5">{item.title}</h3>
+                    <p className="text-lg text-muted-foreground leading-relaxed">{item.description}</p>
+                  </button>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Bottom Quote */}
-      <section className="py-16 border-t border-border">
-        <div className="container-wide">
-          <Reveal>
-            <p className="text-center text-lg text-muted-foreground max-w-3xl mx-auto">
-              We also share knowledge with lenders investing across the capital structure 
-              to help connect the dots.
-            </p>
-          </Reveal>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-24 md:py-32 bg-secondary/30">

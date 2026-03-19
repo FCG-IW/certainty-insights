@@ -5,6 +5,11 @@ interface StatementSectionProps {
   label?: string;
   children: ReactNode;
   compact?: boolean;
+  backgroundImage?: string;
+  backgroundImageOpacity?: number;
+  backgroundOverlayOpacity?: number;
+  blobOpacityScale?: number;
+  minHeight?: string | number;
 }
 
 /*
@@ -51,7 +56,16 @@ const meshBlobs = [
   { size: 400, blur: 110, opacity: 0.5,  top: "50%",  left: "75%",  anim: "blob-roam-4 44s ease-in-out infinite" },
 ];
 
-export default function StatementSection({ label, children, compact = false }: StatementSectionProps) {
+export default function StatementSection({
+  label,
+  children,
+  compact = false,
+  backgroundImage,
+  backgroundImageOpacity = 1,
+  backgroundOverlayOpacity = 0,
+  blobOpacityScale = 1,
+  minHeight,
+}: StatementSectionProps) {
   const blobsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
@@ -81,10 +95,29 @@ export default function StatementSection({ label, children, compact = false }: S
         (compact ? "py-12 md:py-16 " : "py-32 md:py-40 ") +
         "bg-foreground text-background relative overflow-hidden"
       }
+      style={{ minHeight }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
       <style>{blobKeyframes}</style>
+
+      {backgroundImage ? (
+        <>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${backgroundImage})`,
+              opacity: backgroundImageOpacity,
+            }}
+          />
+          {backgroundOverlayOpacity > 0 ? (
+            <div
+              className="absolute inset-0 bg-foreground"
+              style={{ opacity: backgroundOverlayOpacity }}
+            />
+          ) : null}
+        </>
+      ) : null}
 
       {/* Animated Green Mesh Gradient — hover-interactive & roaming */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -97,7 +130,7 @@ export default function StatementSection({ label, children, compact = false }: S
               width: b.size,
               height: b.size,
               filter: `blur(${b.blur}px)`,
-              opacity: b.opacity,
+              opacity: b.opacity * blobOpacityScale,
               background: "radial-gradient(circle, hsl(150 46% 51%) 0%, transparent 70%)",
               top: b.top,
               left: b.left,
