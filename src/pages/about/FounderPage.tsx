@@ -2,6 +2,7 @@ import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight, Mail, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
 import founderImage from "@/assets/founder.png";
 import fcgLogotypeDark from "@/assets/FCG_Logotype_Dark 1.png";
 
@@ -220,8 +221,8 @@ export default function FounderPage() {
           
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             <Reveal delay={100}>
-              <a
-                href="/about/approach"
+              <Link
+                to="/about/approach"
                 className="group flex items-center justify-between p-8 border border-border hover:border-primary hover:bg-primary/5 transition-colors"
               >
                 <div>
@@ -231,11 +232,11 @@ export default function FounderPage() {
                   <span className="text-sm text-muted-foreground">Discipline, Discovery, Diplomacy</span>
                 </div>
                 <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
-              </a>
+              </Link>
             </Reveal>
             <Reveal delay={200}>
-              <a
-                href="/about/history"
+              <Link
+                to="/about/history"
                 className="group flex items-center justify-between p-8 border border-border hover:border-primary hover:bg-primary/5 transition-colors"
               >
                 <div>
@@ -245,7 +246,7 @@ export default function FounderPage() {
                   <span className="text-sm text-muted-foreground">Trusted since 2002</span>
                 </div>
                 <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
-              </a>
+              </Link>
             </Reveal>
           </div>
         </div>

@@ -6,6 +6,7 @@ import badgeIcon from "@/assets/carbon_badge.svg";
 import handshakeIcon from "@/assets/fluent_handshake-20-regular.svg";
 import anchorIcon from "@/assets/material-symbols_anchor.svg";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const threeCs = [
   {
@@ -200,8 +201,8 @@ export default function HistoryPage() {
           
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             <Reveal delay={100}>
-              <a
-                href="/about/founder"
+              <Link
+                to="/about/founder"
                 className="group flex items-center justify-between p-8 border border-border hover:border-primary hover:bg-primary/5 transition-colors"
               >
                 <div>
@@ -211,11 +212,11 @@ export default function HistoryPage() {
                   <span className="text-sm text-muted-foreground">Dana Campbell Latimer, CFE</span>
                 </div>
                 <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
-              </a>
+              </Link>
             </Reveal>
             <Reveal delay={200}>
-              <a
-                href="/about/approach"
+              <Link
+                to="/about/approach"
                 className="group flex items-center justify-between p-8 border border-border hover:border-primary hover:bg-primary/5 transition-colors"
               >
                 <div>
@@ -225,7 +226,7 @@ export default function HistoryPage() {
                   <span className="text-sm text-muted-foreground">Discipline, Discovery, Diplomacy</span>
                 </div>
                 <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
-              </a>
+              </Link>
             </Reveal>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import interlockGraphic from "@/assets/interlock-graphic.png";
 import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
 import logomarkGreen from "@/assets/logomark-green.png";
@@ -223,8 +224,8 @@ export default function ApproachPage() {
           
           <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
             <Reveal delay={100}>
-              <a
-                href="/about/founder"
+              <Link
+                to="/about/founder"
                 className="group flex items-center justify-between p-8 bg-card border border-border hover:border-primary transition-colors"
               >
                 <div>
@@ -234,11 +235,11 @@ export default function ApproachPage() {
                   <span className="text-sm text-muted-foreground">Dana Campbell Latimer, CFE</span>
                 </div>
                 <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
-              </a>
+              </Link>
             </Reveal>
             <Reveal delay={200}>
-              <a
-                href="/about/history"
+              <Link
+                to="/about/history"
                 className="group flex items-center justify-between p-8 bg-card border border-border hover:border-primary transition-colors"
               >
                 <div>
@@ -248,7 +249,7 @@ export default function ApproachPage() {
                   <span className="text-sm text-muted-foreground">Trusted since 2002</span>
                 </div>
                 <ArrowRight className="h-5 w-5 text-primary group-hover:translate-x-2 transition-transform" />
-              </a>
+              </Link>
             </Reveal>
           </div>
         </div>
