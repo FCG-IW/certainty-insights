@@ -3,6 +3,8 @@ import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
+import interlockGraphic from "@/assets/interlock-graphic.png";
 
 const services = [
   { number: "01", name: "COLLATERAL FIELD EXAMINATIONS" },
@@ -113,7 +115,7 @@ export default function FinancialInstitutionsPage() {
             <div className="lg:col-span-6">
               <Reveal delay={100}>
                  <img 
-                  src="/src/assets/FCG_BannerMark_Green 1.png"
+                  src={bannerMark}
                   alt="Engagements"
                   className=" h-auto mb-8"
                 />  
@@ -157,7 +159,7 @@ export default function FinancialInstitutionsPage() {
               </div>
               <div className="lg:col-span-6 flex flex-col justify-center items-center">
                 <img 
-                  src="/src/assets/interlock-graphic.png"
+                  src={interlockGraphic}
                   alt="Engagements"
                   className="w-full max-w-[240px] h-auto mb-8"
                 />
