@@ -119,7 +119,7 @@ export default function GovernmentPage() {
                 </div>
                 <div className="lg:col-span-5">
                   <Reveal delay={200}>
-                    <p className="text-xl text-muted-foreground font-light text-right">
+                    <p className="text-base md:text-xl text-muted-foreground font-light text-left lg:text-right">
 Supporting transparency,
 accountability, and stewardship of public resources.                    </p>
                   </Reveal>

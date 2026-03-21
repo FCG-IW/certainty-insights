@@ -118,7 +118,7 @@ export default function ApproachPage() {
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light text-right">
+                <p className="text-base md:text-xl text-muted-foreground font-light text-left lg:text-right">
                   Partnership, shared expertise, and client-focused success at every step.
                 </p>
               </Reveal>
@@ -149,9 +149,27 @@ export default function ApproachPage() {
             </div>
           </Reveal>
 
+          <div className="grid gap-4 md:gap-6 lg:hidden">
+            {values.map((item, index) => (
+              <Reveal key={item.title} delay={100 + index * 80}>
+                <article className="border border-border bg-card p-7 flex flex-col">
+                  <div className="mb-2">
+                    <span className="inline-block text-xs tracking-[0.24em] uppercase text-primary/80 font-medium">
+                      {item.number}
+                    </span>
+                  </div>
+                  <h3 className="text-3xl font-bold text-foreground mb-5">{item.title}</h3>
+                  <p className="text-base text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+
           <div
             key={activeIndex}
-            className="grid lg:grid-cols-12 gap-4 md:gap-6 items-stretch animate-[approach-swap_550ms_ease]"
+            className="hidden lg:grid lg:grid-cols-12 gap-4 md:gap-6 items-stretch lg:animate-[approach-swap_550ms_ease]"
           >
             <Reveal delay={100} className="lg:col-span-8 h-full">
               <article
@@ -164,7 +182,7 @@ export default function ApproachPage() {
                   </span>
                 </div>
                 <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-5">{featuredValue.title}</h3>
-                <p className="text-lg text-muted-foreground leading-relaxed mb-6 max-w-4xl">
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 max-w-4xl">
                   {featuredValue.description}
                 </p>
                 <div className="rounded-md overflow-hidden border-b-4 border-primary bg-secondary/40 mt-2 flex-1 min-h-[260px]">
@@ -198,7 +216,7 @@ export default function ApproachPage() {
                       </div>
                     </div>
                     <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-5">{item.title}</h3>
-                    <p className="text-lg text-muted-foreground leading-relaxed">{item.description}</p>
+                    <p className="text-base md:text-lg text-muted-foreground leading-relaxed">{item.description}</p>
                   </button>
                 </Reveal>
               ))}

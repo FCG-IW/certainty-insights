@@ -55,7 +55,7 @@ export default function ContactPage() {
             </div>
             <div className="lg:col-span-5">
               <Reveal delay={200}>
-                <p className="text-lg text-muted-foreground font-medium text-right">
+                <p className="text-base md:text-lg text-muted-foreground font-medium text-left lg:text-right">
                   Complete the form below, and an FCG team member will contact you directly.
                 </p>
               </Reveal>
@@ -79,7 +79,7 @@ export default function ContactPage() {
                       </div>
                     </div>
                     <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Message Sent</h3>
-                    <p className="text-muted-foreground text-lg mb-8">
+                    <p className="text-muted-foreground text-base md:text-lg mb-8">
                       Thank you for reaching out. We'll get back to you as soon as possible.
                     </p>
                     <Button 
@@ -211,7 +211,7 @@ export default function ContactPage() {
                 />
 
                 <div className="bg-primary px-6 py-7 md:px-8 md:py-8">
-                  <p className="text-foreground text-xl leading-relaxed max-w-2xl mb-4">
+                  <p className="text-foreground text-base md:text-xl leading-relaxed max-w-2xl mb-4">
                     We recruit and retain individuals committed to partnership, shared expertise, and client-focused success.
                   </p>
                   <a

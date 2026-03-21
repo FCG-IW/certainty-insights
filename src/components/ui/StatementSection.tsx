@@ -156,8 +156,7 @@ export default function StatementSection({
           <div className={label ? "lg:col-span-10" : "lg:col-span-12 text-center"}>
             <Reveal delay={100}>
               <div
-                className={"space-y-6 statement-body" + (label ? "" : " mx-auto")}
-                style={{ fontSize: "32px", lineHeight: 1.45 }}
+                className={"space-y-6 statement-body text-xl sm:text-2xl md:text-3xl lg:text-[32px] leading-[1.45]" + (label ? "" : " mx-auto")}
               >
                 {children}
               </div>

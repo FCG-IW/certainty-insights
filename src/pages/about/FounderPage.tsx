@@ -43,7 +43,7 @@ export default function FounderPage() {
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light text-right mb-6">
+                <p className="text-base md:text-xl text-muted-foreground font-light text-left lg:text-right mb-6">
                   Founder and President with over three decades of industry experience.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
@@ -133,7 +133,7 @@ export default function FounderPage() {
             <div className="lg:col-span-8">
               <div className="max-w-2xl">
                 <Reveal delay={100}>
-                  <p className="text-2xl md:text-3xl leading-relaxed text-foreground font-light mb-8">
+                  <p className="text-base md:text-3xl leading-relaxed text-foreground font-light mb-8">
                     Dana Campbell Latimer is widely recognized for her expertise in{" "}
                     <span className="text-primary font-medium">fraud investigation</span>,{" "}
                     lending due diligence,{" "}
@@ -143,14 +143,14 @@ export default function FounderPage() {
                 </Reveal>
 
                 <Reveal delay={200}>
-                  <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
                     Her analytical approach emphasizes both quantitative evaluation and 
                     qualitative insight, enabling stakeholders to make informed credit decisions.
                   </p>
                 </Reveal>
 
                 <Reveal delay={300}>
-                  <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
                     Beyond examinations, Dana is known for translating complex findings 
                     into clear, actionable recommendations. She has designed and delivered 
                     training programs for fraud detection, internal controls, and compliance 
@@ -160,7 +160,7 @@ export default function FounderPage() {
                 </Reveal>
 
                 <Reveal delay={400}>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
+                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
                     Before founding FCG in 2002, Dana served as an examiner with a 
                     national field examination firm, performing field exams and audits 
                     as well as monitoring loan portfolios. Previously, she worked as an 

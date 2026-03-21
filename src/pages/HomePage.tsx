@@ -5,6 +5,7 @@ import interlockGraphic from "@/assets/interlock-graphic.png";
 import { Reveal, useParallax } from "@/hooks/useScrollReveal";
 import Timeline from "@/components/ui/Timeline";
 import StatementSection from "@/components/ui/StatementSection";
+import CountUp from "@/components/ui/CountUp";
 
 const clients = [
   "Asset-Based Lenders",
@@ -78,7 +79,7 @@ export default function HomePage() {
               </Reveal>
               
               <Reveal delay={100}>
-                <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
+                <p className="text-base md:text-lg text-muted-foreground max-w-lg leading-relaxed">
                   When making informed credit decisions, you need accurate
                   and reliable information about an organization's financial or
                   non-financial status. That's where FCG comes in.
@@ -179,10 +180,10 @@ export default function HomePage() {
               {[...clients, ...clients].map((client, index) => (
                 <div 
                   key={`${client}-${index}`}
-                  className="flex-shrink-0 mx-3"
+                  className="flex-shrink-0 mx-2 md:mx-3"
                 >
-                  <div className="px-6 py-4 border border-background/10 bg-background/5 backdrop-blur-sm hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 cursor-default">
-                    <span className="text-sm md:text-base text-background/90 font-medium whitespace-nowrap">
+                  <div className="px-4 py-2.5 md:px-6 md:py-4 border border-background/10 bg-background/5 backdrop-blur-sm hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 cursor-default">
+                    <span className="text-xs md:text-base text-background/90 font-medium whitespace-nowrap">
                       {client}
                     </span>
                   </div>
@@ -199,10 +200,30 @@ export default function HomePage() {
               {[...clients.slice().reverse(), ...clients.slice().reverse()].map((client, index) => (
                 <div 
                   key={`${client}-reverse-${index}`}
-                  className="flex-shrink-0 mx-3"
+                  className="flex-shrink-0 mx-2 md:mx-3"
                 >
-                  <div className="px-6 py-4 border border-background/10 bg-background/5 backdrop-blur-sm hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 cursor-default">
-                    <span className="text-sm md:text-base text-background/90 font-medium whitespace-nowrap">
+                  <div className="px-4 py-2.5 md:px-6 md:py-4 border border-background/10 bg-background/5 backdrop-blur-sm hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 cursor-default">
+                    <span className="text-xs md:text-base text-background/90 font-medium whitespace-nowrap">
+                      {client}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Animated Marquee - Third Row (Mobile Only) */}
+          <div className="relative mt-4 overflow-hidden md:hidden">
+            <div className="absolute left-0 top-0 w-16 h-full bg-gradient-to-r from-foreground to-transparent z-10" />
+            <div className="absolute right-0 top-0 w-16 h-full bg-gradient-to-l from-foreground to-transparent z-10" />
+            <div className="flex animate-marquee">
+              {[...clients.slice(2), ...clients.slice(0, 2), ...clients.slice(2), ...clients.slice(0, 2)].map((client, index) => (
+                <div
+                  key={`${client}-mobile-third-${index}`}
+                  className="flex-shrink-0 mx-2"
+                >
+                  <div className="px-4 py-2.5 border border-background/10 bg-background/5 backdrop-blur-sm hover:bg-primary/20 hover:border-primary/30 transition-all duration-300 cursor-default">
+                    <span className="text-xs text-background/90 font-medium whitespace-nowrap">
                       {client}
                     </span>
                   </div>
@@ -216,7 +237,9 @@ export default function HomePage() {
               <div className="mt-16 pt-12 border-t border-background/10">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 <div>
-                  <span
+                  <CountUp
+                    end={20}
+                    suffix="+"
                     className="block text-primary mb-2"
                     style={{
                       fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
@@ -224,13 +247,13 @@ export default function HomePage() {
                       fontSize: "clamp(48px, 12vw, 80px)",
                       lineHeight: 1,
                     }}
-                  >
-                    20+
-                  </span>
+                  />
                   <span className="text-sm text-background/60 uppercase tracking-wider">Years Experience</span>
                 </div>
                 <div>
-                  <span
+                  <CountUp
+                    end={1000}
+                    suffix="+"
                     className="block text-primary mb-2"
                     style={{
                       fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
@@ -238,13 +261,13 @@ export default function HomePage() {
                       fontSize: "clamp(48px, 12vw, 80px)",
                       lineHeight: 1,
                     }}
-                  >
-                    1000+
-                  </span>
+                  />
                   <span className="text-sm text-background/60 uppercase tracking-wider">Engagements</span>
                 </div>
                 <div>
-                  <span
+                  <CountUp
+                    end={100}
+                    suffix="%"
                     className="block text-primary mb-2"
                     style={{
                       fontFamily: "Outfit, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
@@ -252,9 +275,7 @@ export default function HomePage() {
                       fontSize: "clamp(48px, 12vw, 80px)",
                       lineHeight: 1,
                     }}
-                  >
-                    100%
-                  </span>
+                  />
                   <span className="text-sm text-background/60 uppercase tracking-wider">Commitment</span>
                 </div>
               </div>
@@ -273,7 +294,7 @@ export default function HomePage() {
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
                 How can we help?
               </h2>
-              <p className="text-xl text-muted-foreground">
+              <p className="text-base md:text-xl text-muted-foreground">
                 Specialized services for financial institutions and government entities
               </p>
             </div>

@@ -45,7 +45,7 @@ export default function CertificationsPage() {
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light">
+                <p className="text-base md:text-xl text-muted-foreground font-light">
                   A certified minority woman-owned, small business, and disadvantaged 
                   business enterprise working nationwide.
                 </p>
@@ -108,7 +108,7 @@ export default function CertificationsPage() {
 
       <StatementSection label="About">
         <>
-          <p className="text-center text-lg text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-center text-base md:text-lg text-muted-foreground max-w-3xl mx-auto">
             Headquartered in North Carolina and serving clients nationwide.
           </p>
         </>

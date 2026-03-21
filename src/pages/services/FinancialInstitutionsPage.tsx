@@ -49,7 +49,7 @@ export default function FinancialInstitutionsPage() {
             </div>
             <div className="lg:col-span-5">
               <Reveal delay={200}>
-                <p className="text-xl text-muted-foreground font-light text-right">
+                <p className="text-base md:text-xl text-muted-foreground font-light text-left lg:text-right">
                   Critical analysis enabling informed credit decisions with greater certainty.
                 </p>
               </Reveal>
@@ -119,7 +119,7 @@ export default function FinancialInstitutionsPage() {
                   alt="Engagements"
                   className=" h-auto mb-8"
                 />  
-                <p className="text-lg text-muted-foreground leading-relaxed sticky top-32">
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed sticky top-32">
                   FCG conducts a vital analysis of a borrower's assets, financial information, and operations to support lending decisions for a wide range of industries. Our professionals have performed thousands of comprehensive (full-scope examinations) and targeted reviews (limited-scope and special-purpose examinations) of privately-held, family-owned, sponsor-backed and public companies, across every stage of the business life cycle, including those with:
                 </p>
               </Reveal>
