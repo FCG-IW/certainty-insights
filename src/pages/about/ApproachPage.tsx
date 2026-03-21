@@ -1,18 +1,18 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import interlockGraphic from "@/assets/interlock-graphic.png";
-import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
-import logomarkGreen from "@/assets/logomark-green.png";
+import discipline from "@/assets/discipline.jpg";
+import discovery from "@/assets/discovery.jpg";
+import diplomacy from "@/assets/diplomacy.jpg";
 
 const values = [
   {
     number: "01",
     title: "Discipline",
-    image: bannerMark,
+    image: discipline,
     imageAlt: "Discipline value visual",
     description:
       "Having performed thousands of field examinations, our seasoned, insight-driven professionals bring discipline and accountability to reduce risk and variability while promoting consistency.",
@@ -20,7 +20,7 @@ const values = [
   {
     number: "02",
     title: "Discovery",
-    image: bannerMark,
+    image: discovery,
     imageAlt: "Discovery value visual",
     description:
       "Through agreed-upon procedures, we help our clients identify potential risks, analyze their impact, and offer practical guidance to make confident, well-supported credit decisions.",
@@ -28,7 +28,7 @@ const values = [
   {
     number: "03",
     title: "Diplomacy",
-    image: bannerMark,
+    image: diplomacy,
     imageAlt: "Diplomacy value visual",
     description:
       "Our deep people skills and white-glove service builds trust as we balance firmness with empathy, especially in sensitive, high-stakes, or relationship-driven environments. We understand how to work across roles, cultures and personalities.",
@@ -37,17 +37,58 @@ const values = [
 
 export default function ApproachPage() {
   const [activeIndex, setActiveIndex] = useState(2);
-  const [rotationSeed, setRotationSeed] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isFading, setIsFading] = useState(false);
+  const [isSwitching, setIsSwitching] = useState(false);
   const [featuredHeight, setFeaturedHeight] = useState<number | undefined>(undefined);
   const rightColumnRef = useRef<HTMLDivElement | null>(null);
+  const switchTimeoutRef = useRef<number | null>(null);
+  const settleTimeoutRef = useRef<number | null>(null);
+
+  const scheduleSwitch = useCallback((nextIndex: number) => {
+    if (nextIndex === activeIndex || isSwitching) return;
+
+    setIsSwitching(true);
+    setIsFading(true);
+
+    if (switchTimeoutRef.current) {
+      window.clearTimeout(switchTimeoutRef.current);
+    }
+    if (settleTimeoutRef.current) {
+      window.clearTimeout(settleTimeoutRef.current);
+    }
+
+    switchTimeoutRef.current = window.setTimeout(() => {
+      setActiveIndex(nextIndex);
+      setIsFading(false);
+
+      settleTimeoutRef.current = window.setTimeout(() => {
+        setIsSwitching(false);
+      }, 1250);
+    }, 420);
+  }, [activeIndex, isSwitching]);
 
   useEffect(() => {
+    if (isPaused) return;
+
     const rotation = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % values.length);
-    }, 4800);
+      const nextIndex = (activeIndex + 1) % values.length;
+      scheduleSwitch(nextIndex);
+    }, 7600);
 
     return () => window.clearInterval(rotation);
-  }, [rotationSeed]);
+  }, [activeIndex, isPaused, scheduleSwitch]);
+
+  useEffect(() => {
+    return () => {
+      if (switchTimeoutRef.current) {
+        window.clearTimeout(switchTimeoutRef.current);
+      }
+      if (settleTimeoutRef.current) {
+        window.clearTimeout(settleTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const syncHeights = () => {
@@ -94,12 +135,6 @@ export default function ApproachPage() {
 
   return (
     <PageLayout>
-      <style>{`
-        @keyframes approach-swap {
-          0% { opacity: 0; transform: translateY(10px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
       {/* Hero Section */}
       <section className="pt-20 pb-16 md:pt-32 md:pb-24">
         <div className="container-wide">
@@ -167,30 +202,33 @@ export default function ApproachPage() {
             ))}
           </div>
 
-          <div
-            key={activeIndex}
-            className="hidden lg:grid lg:grid-cols-12 gap-4 md:gap-6 items-stretch lg:animate-[approach-swap_550ms_ease]"
-          >
+          <div className="hidden lg:grid lg:grid-cols-12 gap-4 md:gap-6 items-stretch">
             <Reveal delay={100} className="lg:col-span-8 h-full">
               <article
-                className="h-full border border-primary/40 bg-card p-7 md:p-9 flex flex-col"
+                className={`h-full border border-primary/40 bg-card p-7 md:p-9 flex flex-col transition-opacity duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${isFading ? "opacity-65" : "opacity-100"}`}
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onFocus={() => setIsPaused(true)}
+                onBlur={() => setIsPaused(false)}
                 style={{ height: featuredHeight ? `${featuredHeight}px` : undefined }}
               >
-                <div className="mb-2">
-                  <span className="inline-block text-xs tracking-[0.24em] uppercase text-primary/80 font-medium">
-                    {featuredValue.number}
-                  </span>
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-5">{featuredValue.title}</h3>
-                <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 max-w-4xl">
-                  {featuredValue.description}
-                </p>
-                <div className="rounded-md overflow-hidden border-b-4 border-primary bg-secondary/40 mt-2 flex-1 min-h-[260px]">
-                  <img
-                    src={featuredValue.image}
-                    alt={featuredValue.imageAlt}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="h-full flex flex-col">
+                  <div className="mb-2">
+                    <span className="inline-block text-xs tracking-[0.24em] uppercase text-primary/80 font-medium">
+                      {featuredValue.number}
+                    </span>
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-foreground mb-5">{featuredValue.title}</h3>
+                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6 max-w-4xl">
+                    {featuredValue.description}
+                  </p>
+                  <div className="rounded-md overflow-hidden border-b-4 border-primary bg-secondary/40 mt-2 flex-1 min-h-[260px]">
+                    <img
+                      src={featuredValue.image}
+                      alt={featuredValue.imageAlt}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
               </article>
             </Reveal>
@@ -201,10 +239,9 @@ export default function ApproachPage() {
                   <button
                     type="button"
                     onClick={() => {
-                      setActiveIndex(item.sourceIndex);
-                      setRotationSeed((seed) => seed + 1);
+                      scheduleSwitch(item.sourceIndex);
                     }}
-                    className="h-full w-full border border-border bg-primary/10 p-7 md:p-9 flex flex-col text-left hover:bg-primary/15 hover:border-primary/40 transition-colors duration-300"
+                    className={`h-full w-full border border-border bg-primary/10 p-7 md:p-9 flex flex-col text-left hover:bg-primary/15 hover:border-primary/40 transition-[opacity,border-color,background-color] duration-[1000ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${isFading ? "opacity-70" : "opacity-100"}`}
                     aria-label={`Show ${item.title} as featured value`}
                   >
                     <div className="flex items-start justify-between gap-4 mb-4">
