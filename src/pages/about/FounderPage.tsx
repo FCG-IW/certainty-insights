@@ -1,10 +1,8 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
-import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight, Mail, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
-import founderImage from "@/assets/founder.png";
-import fcgLogotypeDark from "@/assets/FCG_Logotype_Dark 1.png";
+import founderImage from "@/assets/Asset-founder.png";
 
 const credentials = [
   "Master's Degree in Accounting and Financial Management, University of Maryland Global Campus",
@@ -12,23 +10,15 @@ const credentials = [
   "Certified Fraud Examiner (CFE)",
 ];
 
-const expertiseBadges = [
-  { label: "Fraud Investigation", x: 14, y: 8 },
-  { label: "Lending Due Diligence", x: 78, y: 41 },
-  { label: "Forensic Financial Analysis", x: 30, y: 60 },
-  { label: "Compliance Consulting", x: 56, y: 94 },
-];
-
-const expertiseBadgeGradient = "linear-gradient(94.82deg, #000a08, #00705a)";
-
 export default function FounderPage() {
   return (
     <PageLayout>
       {/* Hero Section */}
-      <section className="pt-20 pb-16 md:pt-32 md:pb-24">
+      <section className="pt-20 pb-12 md:pt-32 md:pb-16">
         <div className="container-wide">
-          <div className="grid lg:grid-cols-12 gap-8 items-end">
-            <div className="lg:col-span-8">
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-16 items-end">
+            {/* Left: Heading */}
+            <div className="lg:col-span-7">
               <Reveal>
                 <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase text-primary border-l-2 border-primary pl-4 mb-8">
                   Leadership
@@ -41,15 +31,17 @@ export default function FounderPage() {
                 </h1>
               </Reveal>
             </div>
-            <div className="lg:col-span-4">
+
+            {/* Right: Tagline & Actions */}
+            <div className="lg:col-span-5">
               <Reveal delay={200}>
-                <p className="text-base md:text-xl text-muted-foreground font-light text-left lg:text-right mb-6">
+                <p className="text-base md:text-lg text-muted-foreground font-light text-left lg:text-right mb-6 lg:mb-8">
                   Founder and President with over three decades of industry experience.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row lg:justify-end gap-3">
                   <a
                     href="mailto:dana@fcgllc.net"
-                    className="group inline-flex items-center gap-3 bg-primary text-background px-5 py-3 font-medium hover:bg-foreground transition-colors"
+                    className="group inline-flex items-center justify-center sm:justify-start gap-2 bg-primary text-background px-4 py-3 font-medium hover:bg-foreground transition-colors text-sm md:text-base"
                   >
                     <Mail className="h-4 w-4" />
                     Connect via Email
@@ -58,7 +50,7 @@ export default function FounderPage() {
                     href="https://www.linkedin.com/in/dana-campbell-latimer-cfe-6310b45/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center gap-3 border border-primary px-5 py-3 font-medium hover:border-border hover:text-primary transition-colors"
+                    className="group inline-flex items-center justify-center sm:justify-start gap-2 border border-primary px-4 py-3 font-medium hover:border-border hover:text-primary transition-colors text-sm md:text-base"
                   >
                     <Linkedin className="h-4 w-4" />
                     LinkedIn
@@ -70,87 +62,42 @@ export default function FounderPage() {
         </div>
       </section>
 
-      <StatementSection
-        label=""
-        backgroundImage={founderImage}
-        backgroundImageOpacity={1}
-        backgroundOverlayOpacity={0}
-        blobOpacityScale={0.5}
-        minHeight="clamp(560px, 78vh, 900px)"
-      >
-        <>
-          <div className="relative w-full h-[360px] md:h-[450px] lg:h-[520px]" style={{ fontSize: "16px", lineHeight: 1.2 }}>
-            <div className="hidden md:block absolute inset-0">
-              {expertiseBadges.map((item, index) => (
-                <span
-                  key={item.label}
-                  className="absolute inline-flex -translate-x-1/2 -translate-y-1/2 items-center rounded-xl border border-primary/35 px-5 py-3 text-[18px] font-semibold tracking-wide text-background shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition-all duration-300 hover:-translate-y-[calc(50%+4px)] hover:scale-[1.03] hover:border-primary/70 hover:brightness-110 hover:shadow-[0_14px_30px_rgba(0,0,0,0.45)]"
-                  style={{
-                    left: `${item.x}%`,
-                    top: `${item.y}%`,
-                    backgroundImage: expertiseBadgeGradient,
-                  }}
-                >
-                  {item.label}
-                </span>
-              ))}
-            </div>
-
-            <div className="md:hidden flex h-full flex-wrap content-center justify-center gap-4 px-2">
-              {expertiseBadges.map((item, index) => (
-                <Reveal key={`${item.label}-mobile`} delay={index * 80}>
-                  <span
-                    className="inline-flex items-center rounded-xl border border-primary/35 px-4 py-2 text-sm font-semibold tracking-wide text-background shadow-[0_8px_20px_rgba(0,0,0,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:border-primary/70 hover:brightness-110 hover:shadow-[0_12px_24px_rgba(0,0,0,0.35)]"
-                    style={{ backgroundImage: expertiseBadgeGradient }}
-                  >
-                    {item.label}
-                  </span>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </>
-      </StatementSection>
-
-      {/* Bio Content */}
-      <section className="py-24 md:py-32">
+      {/* Main Content Section */}
+      <section className="py-20 md:py-32">
         <div className="container-wide">
-          <div className="grid lg:grid-cols-12 gap-16">
-            {/* Brand Panel */}
-            <div className="lg:col-span-4">
+          <div className="grid lg:grid-cols-12 gap-12 items-start">
+            {/* Left: Image */}
+            <div className="lg:col-span-5">
               <Reveal>
-                <div className="h-full min-h-[260px] md:min-h-[320px] lg:min-h-[520px] flex items-center justify-center px-4 md:px-6">
-                  <img
-                    src={fcgLogotypeDark}
-                    alt="Financial Compliance Group"
-                    className="w-full max-w-[360px] h-auto object-contain"
-                  />
-                </div>
+                <img
+                  src={founderImage}
+                  alt="Dana Campbell Latimer"
+                  className="w-full h-auto object-cover rounded-lg"
+                />
               </Reveal>
             </div>
 
-            {/* Bio Text */}
-            <div className="lg:col-span-8">
-              <div className="max-w-2xl">
+            {/* Right: Bio Content */}
+            <div className="lg:col-span-7">
+              <div className="space-y-8">
                 <Reveal delay={100}>
-                  <p className="text-base md:text-3xl leading-relaxed text-foreground font-light mb-8">
+                  <p className="text-2xl md:text-3xl lg:text-4xl font-bold leading-[1.3] text-foreground">
                     Dana Campbell Latimer is widely recognized for her expertise in{" "}
-                    <span className="text-primary font-medium">fraud investigation</span>,{" "}
-                    lending due diligence,{" "}
-                    <span className="text-primary font-medium">forensic financial analysis</span>{" "}
+                    <span className="text-primary">fraud investigation</span>, lending due diligence,{" "}
+                    <span className="text-primary">forensic financial analysis</span>{" "}
                     and compliance consulting.
                   </p>
                 </Reveal>
 
                 <Reveal delay={200}>
-                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
+                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
                     Her analytical approach emphasizes both quantitative evaluation and 
                     qualitative insight, enabling stakeholders to make informed credit decisions.
                   </p>
                 </Reveal>
 
                 <Reveal delay={300}>
-                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-6">
+                  <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
                     Beyond examinations, Dana is known for translating complex findings 
                     into clear, actionable recommendations. She has designed and delivered 
                     training programs for fraud detection, internal controls, and compliance 
