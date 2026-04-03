@@ -8,6 +8,14 @@ import handshakeIcon from "@/assets/fluent_handshake-20-regular.svg";
 import anchorIcon from "@/assets/material-symbols_anchor.svg";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useWordPressAcf } from "@/hooks/useWordPressAcf";
+import {
+  asCleanString,
+  getAcfRecordArray,
+  getAcfString,
+  getAcfStringArray,
+  parseCountValue,
+} from "@/lib/wordpress";
 
 const threeCs = [
   {
@@ -36,9 +44,36 @@ const milestones = [
   { end: 20, suffix: "+", label: "Years of Service" },
 ];
 
+const storyParagraphFallbacks = [
+  "Financial Compliance Group was founded in 2002 to provide banks and independent financial services organizations with trusted experts in field examinations, collateral reviews, and forensic investigations, helping them manage risk, protect their investments, and maintain the integrity of their loan portfolios.",
+  "Over a thousand engagements since then, the firm's services have expanded to help government agencies mitigate risk when analyzing vendors, grantees, and awardees.",
+];
+
 const threeCIcons = [badgeIcon, handshakeIcon, anchorIcon];
 
 export default function HistoryPage() {
+  const { data: acf } = useWordPressAcf("history");
+
+  const cmsMilestones = getAcfRecordArray(
+    acf,
+    "milestones",
+    (item) => {
+      const rawValue = asCleanString(item.value, asCleanString(item.number, asCleanString(item.end, "0")));
+      const { end, suffix } = parseCountValue(rawValue);
+
+      return {
+        end,
+        suffix: asCleanString(item.suffix, suffix),
+        label: asCleanString(item.label, "Milestone"),
+      };
+    },
+    milestones,
+  );
+
+  const storyHeading = getAcfString(acf, "story_heading", "Our Story");
+  const storyLogoUrl = getAcfString(acf, "story_logo_url", "");
+  const storyParagraphs = getAcfStringArray(acf, "story_paragraphs", storyParagraphFallbacks);
+
   return (
     <PageLayout>
       {/* Hero Section */}
@@ -72,7 +107,7 @@ export default function HistoryPage() {
         <StatementSection  compact>
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 text-center">
-            {milestones.map((item, index) => (
+            {cmsMilestones.map((item, index) => (
               <Reveal key={item.label} delay={index * 100}>
                 <div>
                   <CountUp
@@ -99,7 +134,7 @@ export default function HistoryPage() {
               <Reveal>
                 <div className="sticky top-32">
                   <span className="text-sm tracking-[0.2em] uppercase text-muted-foreground font-medium">
-                    Our Story
+                    {storyHeading}
                   </span>
                 </div>
               </Reveal>
@@ -109,17 +144,17 @@ export default function HistoryPage() {
             <div className="lg:col-span-7 space-y-8">
               <Reveal delay={100}>
                 <div className="text-left">
-                  <img src={bannerMark} alt="FCG" className="w-28 h-auto mb-6" />
-                  <p className="text-base md:text-3xl leading-relaxed text-foreground font-medium mb-10">
-                    Financial Compliance Group was founded in 2002 to provide banks and 
-                    independent financial services organizations with{" "}
-                    <span className="text-primary font-bold">trusted experts</span> in 
-                    field examinations, collateral reviews, and forensic investigations,{" "}
-                    <span className="text-primary font-bold">Helping them manage risk, protect their investments, and maintain the integrity of their loan portfolios.</span> 
-                  </p>
-                  <p className="text-base md:text-3xl leading-relaxed text-foreground font-medium">
-                    Over a thousand engagements since then, the firm’s services have expanded to help government agencies mitigate risk when analyzing vendors, grantees, and awardees.
+                  <img src={storyLogoUrl || bannerMark} alt="FCG" className="w-28 h-auto mb-6" />
+                  {storyParagraphs.map((paragraph, index) => (
+                    <p
+                      key={`${paragraph.slice(0, 20)}-${index}`}
+                      className={`text-base md:text-3xl leading-relaxed text-foreground font-medium ${
+                        index < storyParagraphs.length - 1 ? "mb-10" : ""
+                      }`}
+                    >
+                      {paragraph}
                     </p>
+                  ))}
                 </div>
               </Reveal>
               

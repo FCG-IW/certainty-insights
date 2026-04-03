@@ -6,6 +6,8 @@ import { Reveal, useParallax } from "@/hooks/useScrollReveal";
 import Timeline from "@/components/ui/Timeline";
 import StatementSection from "@/components/ui/StatementSection";
 import CountUp from "@/components/ui/CountUp";
+import { useWordPressAcf } from "@/hooks/useWordPressAcf";
+import { asCleanString, getAcfRecordArray, getAcfString } from "@/lib/wordpress";
 
 const clients = [
   "Asset-Based Lenders",
@@ -36,8 +38,25 @@ const values = [
   },
 ];
 
+const statementFallback =
+  "Over the course of more than two decades of deep analytical and accounting expertise, diplomatic and consultative approach, and relentless work ethic. We are committed to building trust through transparency and strong communication processes, helping our clients and their customers navigate complex commercial lending, investing and government contracting transactions successfully.";
+
 export default function HomePage() {
   const { ref: parallaxRef, offset } = useParallax(0.3);
+  const { data: acf } = useWordPressAcf("home");
+
+  const statementLabel = getAcfString(acf, "statement_label", "About");
+  const statementContent = getAcfString(acf, "statement_content", statementFallback);
+  const cmsValues = getAcfRecordArray(
+    acf,
+    "values_items",
+    (item, index) => ({
+      number: asCleanString(item.number, String(index + 1).padStart(2, "0")),
+      title: asCleanString(item.title, "Value"),
+      description: asCleanString(item.description),
+    }),
+    values,
+  );
 
   return (
     <>
@@ -125,11 +144,8 @@ export default function HomePage() {
       </section>
 
       {/* Statement Section - Magazine Style */}
-      <StatementSection label="About">
-        Over the course of more than two decades of{" "}
-        <span className="text-primary font-medium">deep analytical and accounting expertise</span>,{" "}
-        <span className="text-primary font-medium">diplomatic and consultative approach</span>, and{" "}
-        <span className="text-primary font-medium">relentless work ethic</span>. We are committed to building trust through transparency and strong communication processes, helping our clients and their customers navigate complex commercial lending, investing and government contracting transactions successfully.
+      <StatementSection label={statementLabel}>
+        {statementContent}
       </StatementSection>
 
       {/* Values Section - Timeline-style Our Approach */}
@@ -149,7 +165,7 @@ export default function HomePage() {
             </div>
           </Reveal>
 
-          <Timeline steps={values} />
+          <Timeline steps={cmsValues} />
         </div>
       </section>
 

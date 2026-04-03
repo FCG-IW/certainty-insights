@@ -1,56 +1,32 @@
 import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
+import { useWordPressAcf } from "@/hooks/useWordPressAcf";
+import { asCleanString, getAcfRecordArray, getAcfString } from "@/lib/wordpress";
 
 import { 
   ArrowRight, 
-  ArrowUpRight,
-  FileCheck, 
-  Search, 
-  Scale, 
-  ShieldCheck,
-  CheckCircle2,
-  Building2,
-  FileText,
-  Award
+  ArrowUpRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const services = [
   { 
     name: "Contract Audit & Assurance",
-    number: "01",
-    description: "Comprehensive review of vendor contracts ensuring compliance with terms, conditions, and regulatory requirements.",
-    icon: FileCheck,
-    featured: true
+    number: "01"
   },
   { 
     name: "Contract Investigations",
-    number: "02",
-    description: "Thorough investigation of contract performance issues and enforcement support.",
-    icon: Search,
-    featured: false
+    number: "02"
   },
   { 
     name: "Forensic Accounting",
-    number: "03",
-    description: "Expert analysis to detect, investigate, and document financial irregularities.",
-    icon: Scale,
-    featured: false
+    number: "03"
   },
   { 
     name: "Fraud Prevention",
-    number: "04",
-    description: "Proactive strategies and controls to identify vulnerabilities before they're exploited.",
-    icon: ShieldCheck,
-    featured: true
+    number: "04"
   },
-];
-
-const stats = [
-  { value: "1000+", label: "Engagements" },
-  { value: "20+", label: "Years Experience" },
-  { value: "100%", label: "Compliance Rate" },
 ];
 
 const naicsCodes = [
@@ -77,14 +53,6 @@ const nigpCodes = [
   { code: "95816", description: "Business Management Services" },
 ];
 
-const certifications = [
-  "Women-Owned Small Business (WOSB)",
-  "Disadvantaged Business Enterprise (DBE)",
-  "Minority Business Enterprise (MBE)",
-  "Small Business Enterprise (SBE)",
-  "Small Professional Services Firm (SPSF)",
-];
-
 const socioeconomicCertifications = [
   { number: "01", title: "Women-Owned Small Business (WOSB) Federal Contracting Program", description: "" },
   { number: "02", title: "Disadvantaged Business Enterprise Program (DBE), Historically Underutilized Business, N.C. Department of Transportation", description: "" },
@@ -98,6 +66,65 @@ const socioeconomicCertifications = [
 ];
 
 export default function GovernmentPage() {
+  const { data: acf } = useWordPressAcf("government");
+
+  const statementLabel = getAcfString(acf, "statement_label", "Our Mission");
+  const statementContent = getAcfString(
+    acf,
+    "statement_content",
+    "Government agencies operate under heightened expectations for transparency, accountability, and stewardship of public resources, and FCG is built to support those mandates. We can work with procurement officers and financial personnel from federal, state, and local agencies to support their decision-making. We verify regulatory compliance and contract performance of vendors, grantees, and awardees of government contracts to strengthen accountability. For complex financial concerns, our Forensic Accounting and Fraud Investigations specialists provide precise, defensible analyses that help detect fraud, support enforcement actions, and safeguard taxpayer dollars. Together, these services help agencies reduce risk, protect resources, and maintain public trust.",
+  );
+
+  const cmsServices = getAcfRecordArray(
+    acf,
+    "services",
+    (item, index) => ({
+      name: asCleanString(item.name, "Service"),
+      number: asCleanString(item.number, String(index + 1).padStart(2, "0")),
+    }),
+    services,
+  );
+
+  const credentialsKicker = getAcfString(acf, "credentials_kicker", "Credentials");
+  const credentialsHeading = getAcfString(acf, "credentials_heading", "Government Firm Certifications");
+  const ueiLabel = getAcfString(acf, "uei_label", "Unique Entity Identifier");
+  const ueiValue = getAcfString(acf, "uei_value", "NCVRRRUH2MQB6");
+  const cageLabel = getAcfString(acf, "cage_label", "CAGE Code");
+  const cageValue = getAcfString(acf, "cage_value", "8VS15");
+  const naicsHeading = getAcfString(acf, "naics_heading", "NAICS Codes");
+  const nigpHeading = getAcfString(acf, "nigp_heading", "NIGP Codes");
+
+  const cmsNaics = getAcfRecordArray(
+    acf,
+    "naics_codes",
+    (item) => ({
+      code: asCleanString(item.code),
+      description: asCleanString(item.description),
+    }),
+    naicsCodes,
+  );
+  const cmsNigp = getAcfRecordArray(
+    acf,
+    "nigp_codes",
+    (item) => ({
+      code: asCleanString(item.code),
+      description: asCleanString(item.description),
+    }),
+    nigpCodes,
+  );
+
+  const socioeconomicHeading = getAcfString(acf, "socioeconomic_heading", "Social Economic Certifications");
+  const cmsSocioeconomic = getAcfRecordArray(
+    acf,
+    "socioeconomic_certifications",
+    (item, index) => ({
+      number: asCleanString(item.number, String(index + 1).padStart(2, "0")),
+      title: asCleanString(item.title),
+      description: asCleanString(item.description),
+    }),
+    socioeconomicCertifications,
+  );
+
   return (
     <PageLayout>
           {/* Hero Section */}
@@ -128,13 +155,8 @@ accountability, and stewardship of public resources.                    </p>
             </div>
           </section>
     
- <StatementSection label="Our Mission">
-       Government agencies operate under heightened expectations for{" "}
-        <span className="text-primary font-medium">transparency</span>,{" "}
-        <span className="text-primary font-medium">accountability</span>, and{" "}
-        <span className="text-primary font-medium">stewardship</span>of public resources—and FCG is built to support those mandates.We can work with procurement officers and financial personnel from federal, state, and local agencies to support their decision-making.
-        <br />
-        We verify regulatory compliance and contract performance of vendors, grantees, and awardees of government contracts to strengthen accountability. For complex financial concerns, our Forensic Accounting and Fraud Investigations specialists provide precise, defensible analyses that help detect fraud, support enforcement actions, and safeguard taxpayer dollars. Together, these services help agencies reduce risk, protect resources, and maintain public trust.
+ <StatementSection label={statementLabel}>
+   {statementContent}
       </StatementSection>
     
    
@@ -159,7 +181,7 @@ accountability, and stewardship of public resources.                    </p>
           </Reveal>
           
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {services.map((service, index) => (
+            {cmsServices.map((service, index) => (
               <Reveal key={service.name} delay={index * 50}>
                 <div className="group border border-border p-8 md:p-10 bg-[#F8F8F8] hover:bg-primary/10 transition-all duration-300 h-full hover:shadow-lg">
                   <span className="text-5xl font-bold text-primary group-hover:text-primary transition-colors block mb-6">
@@ -182,10 +204,10 @@ accountability, and stewardship of public resources.                    </p>
           <Reveal>
             <div className="mb-16">
               <span className="text-sm tracking-[0.2em] uppercase text-primary block mb-4">
-                Credentials
+                {credentialsKicker}
               </span>
               <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-                Government Firm Certifications
+                {credentialsHeading}
               </h2>
             </div>
           </Reveal>
@@ -195,18 +217,18 @@ accountability, and stewardship of public resources.                    </p>
             <div className="grid md:grid-cols-2 gap-0 mb-16">
               <div className="bg-foreground text-background p-8 md:p-10">
                 <p className="text-xs tracking-[0.2em] uppercase text-primary/60 mb-3">
-                  Unique Entity Identifier
+                  {ueiLabel}
                 </p>
                 <p className="text-3xl md:text-4xl font-mono font-bold">
-                  NCVRRRUH2MQB6
+                  {ueiValue}
                 </p>
               </div>
               <div className="bg-primary text-foreground p-8 md:p-10">
                 <p className="text-xs tracking-[0.2em] uppercase text-foreground/60 mb-3">
-                  CAGE Code
+                  {cageLabel}
                 </p>
                 <p className="text-3xl md:text-4xl font-mono font-bold">
-                  8VS15
+                  {cageValue}
                 </p>
               </div>
             </div>
@@ -217,9 +239,9 @@ accountability, and stewardship of public resources.                    </p>
             {/* NAICS Codes */}
             <Reveal delay={150}>
               <div className="bg-[#FFFFFF] border border-[#E6E6E6] p-8">
-                <h3 className="text-lg font-bold text-foreground mb-6">NAICS Codes</h3>
+                <h3 className="text-lg font-bold text-foreground mb-6">{naicsHeading}</h3>
                 <div className="space-y-4">
-                  {naicsCodes.map((item) => (
+                  {cmsNaics.map((item) => (
                     <div key={item.code}>
                       <p className="text-primary font-mono font-bold mb-1">{item.code}</p>
                       <p className="text-sm text-muted-foreground">{item.description}</p>
@@ -232,9 +254,9 @@ accountability, and stewardship of public resources.                    </p>
             {/* NIGP Codes */}
             <Reveal delay={200}>
               <div className="bg-[#FFFFFF] border border-[#E6E6E6] p-8">
-                <h3 className="text-lg font-bold text-foreground mb-6">NIGP Codes</h3>
+                <h3 className="text-lg font-bold text-foreground mb-6">{nigpHeading}</h3>
                 <div className="space-y-3">
-                  {nigpCodes.map((item) => (
+                  {cmsNigp.map((item) => (
                     <div key={item.code} className="flex items-center gap-6">
                       <p className="text-primary font-mono font-bold flex-shrink-0">{item.code}</p>
                       <p className="text-sm text-muted-foreground">{item.description}</p>
@@ -253,14 +275,14 @@ accountability, and stewardship of public resources.                    </p>
           <Reveal>
             <div className="mb-16">
               <h2 className="text-xl md:text-2xl font-bold text-foreground">
-                Social Economic Certifications
+                {socioeconomicHeading}
               </h2>
             </div>
           </Reveal>
 
           <Reveal>
             <div className="grid md:grid-cols-2 gap-8">
-              {socioeconomicCertifications.map((cert) => (
+              {cmsSocioeconomic.map((cert) => (
                 <div key={cert.number} className="bg-[#FFFFFF] border border-[#E6E6E6] p-6 flex gap-4">
                   <div className="flex-shrink-0">
                     <span className="text-3xl font-bold text-primary">{cert.number}</span>

@@ -5,6 +5,8 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
 import interlockGraphic from "@/assets/interlock-graphic.png";
+import { useWordPressAcf } from "@/hooks/useWordPressAcf";
+import { asCleanString, getAcfRecordArray, getAcfString, getAcfStringArray } from "@/lib/wordpress";
 
 const services = [
   { number: "01", name: "COLLATERAL FIELD EXAMINATIONS" },
@@ -27,7 +29,29 @@ const industries = [
   "Loan portfolios, such as auto finance companies, mortgage lenders, hard money real estate lenders, equipment finance companies, consumer lenders and litigation finance firms",
 ];
 
+const statementFallback =
+  "We have demonstrated success in asset-based lending and collateral field examinations, corporate loan fraud investigations, workout support, and other agreed-upon procedures to help lenders and funders, such as commercial banks and independent financial institutions, as well as specialized lenders, protect their investments. The result: a critical analysis that enables informed credit decisions with greater certainty, ultimately leading to successful transactions.";
+
+const situationsFallback =
+  "FCG conducts a vital analysis of a borrower's assets, financial information, and operations to support lending decisions for a wide range of industries. Our professionals have performed thousands of comprehensive (full-scope examinations) and targeted reviews (limited-scope and special-purpose examinations) of privately-held, family-owned, sponsor-backed and public companies, across every stage of the business life cycle, including those with:";
+
 export default function FinancialInstitutionsPage() {
+  const { data: acf } = useWordPressAcf("financial-institutions");
+
+  const statementLabel = getAcfString(acf, "statement_label", "Expertise");
+  const statementContent = getAcfString(acf, "statement_content", statementFallback);
+  const cmsServices = getAcfRecordArray(
+    acf,
+    "services",
+    (item, index) => ({
+      number: asCleanString(item.number, String(index + 1).padStart(2, "0")),
+      name: asCleanString(item.name, "Service"),
+    }),
+    services,
+  );
+  const situationsIntro = getAcfString(acf, "situations_intro", situationsFallback);
+  const situationItems = getAcfStringArray(acf, "situations_items", industries);
+
   return (
     <PageLayout>
       {/* Hero Section */}
@@ -58,12 +82,7 @@ export default function FinancialInstitutionsPage() {
         </div>
       </section>
 
-       <StatementSection label="Expertise">
-              We have 
-{" "}
-              <span className="text-primary font-medium">demonstrated success</span>,{" "}
-               in asset-based lending and collateral field examinations, corporate loan fraud investigations, workout support, and other agreed-upon procedures to help lenders and funders — such as commercial banks and independent financial institutions, as well as specialized lenders, protect their —investments. The result: a critical analysis that enables informed credit decisions with greater certainty, ultimately leading to successful transactions.
-              </StatementSection>
+      <StatementSection label={statementLabel}>{statementContent}</StatementSection>
 
       {/* Services Grid */}
       <section className="py-24 md:py-32">
@@ -83,7 +102,7 @@ export default function FinancialInstitutionsPage() {
           </Reveal>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, index) => (
+            {cmsServices.map((service, index) => (
               <Reveal key={service.name} delay={index * 50}>
                 <div className="group border border-border p-8 md:p-10 bg-[#F8F8F8] hover:bg-primary/10 transition-all duration-300 h-full hover:shadow-lg">
                   <span className="text-5xl font-bold text-primary group-hover:text-primary transition-colors block mb-6">
@@ -99,7 +118,7 @@ export default function FinancialInstitutionsPage() {
         </div>
       </section>
 
-      {/* Industries Section */}
+      {/* Situations Section */}
       <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container-wide">
           <Reveal>
@@ -120,13 +139,13 @@ export default function FinancialInstitutionsPage() {
                   className=" h-auto mb-8"
                 />  
                 <p className="text-base md:text-lg text-muted-foreground leading-relaxed sticky top-32">
-                  FCG conducts a vital analysis of a borrower's assets, financial information, and operations to support lending decisions for a wide range of industries. Our professionals have performed thousands of comprehensive (full-scope examinations) and targeted reviews (limited-scope and special-purpose examinations) of privately-held, family-owned, sponsor-backed and public companies, across every stage of the business life cycle, including those with:
+                  {situationsIntro}
                 </p>
               </Reveal>
             </div>
             <div className="lg:col-span-6">
               <div className="space-y-0 border-t border-border">
-                {industries.map((industry, index) => (
+                {situationItems.map((industry, index) => (
                   <Reveal key={index} delay={index * 50}>
                     <div className="flex items-start gap-6 py-6 border-b border-border hover:bg-card transition-colors">
                       <span className="text-2xl font-bold text-primary/30 w-10">
