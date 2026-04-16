@@ -112,3 +112,44 @@ export function parseCountValue(value: string): { end: number; suffix: string } 
   const suffix = trimmed.replace(/[\d\s]/g, "");
   return { end: numeric, suffix };
 }
+
+export function getAcfIndexedStringList(
+  acf: WordPressAcf | null | undefined,
+  keyPrefix: string,
+  max: number,
+): string[] {
+  const source = acf ?? {};
+  const items: string[] = [];
+
+  for (let index = 1; index <= max; index += 1) {
+    const value = asCleanString(source[`${keyPrefix}_${index}`]);
+    if (value.length > 0) {
+      items.push(value);
+    }
+  }
+
+  return items;
+}
+
+export function getAcfIndexedRecords(
+  acf: WordPressAcf | null | undefined,
+  keyPrefix: string,
+  fields: string[],
+  max: number,
+): Array<Record<string, string>> {
+  const source = acf ?? {};
+  const rows: Array<Record<string, string>> = [];
+
+  for (let index = 1; index <= max; index += 1) {
+    const row: Record<string, string> = {};
+    for (const field of fields) {
+      row[field] = asCleanString(source[`${keyPrefix}_${index}_${field}`]);
+    }
+
+    if (fields.some((field) => row[field].length > 0)) {
+      rows.push(row);
+    }
+  }
+
+  return rows;
+}

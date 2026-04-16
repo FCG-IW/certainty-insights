@@ -4,7 +4,7 @@ import { ArrowRight, Mail, Linkedin } from "lucide-react";
 import { Link } from "react-router-dom";
 import founderImage from "@/assets/Asset-founder.png";
 import { useWordPressAcf } from "@/hooks/useWordPressAcf";
-import { getAcfString, getAcfStringArray } from "@/lib/wordpress";
+import { getAcfIndexedStringList, getAcfString, getAcfStringArray } from "@/lib/wordpress";
 
 const credentials = [
   "Master's Degree in Accounting and Financial Management, University of Maryland Global Campus",
@@ -44,8 +44,12 @@ export default function FounderPage() {
     "bio_lead",
     "Dana Campbell Latimer is widely recognized for her expertise in fraud investigation, lending due diligence, forensic financial analysis and compliance consulting.",
   );
-  const bioParagraphs = getAcfStringArray(acf, "bio_paragraphs", founderBioFallback);
-  const educationItems = getAcfStringArray(acf, "education_items", credentials);
+  const repeaterBioParagraphs = getAcfStringArray(acf, "bio_paragraphs", founderBioFallback);
+  const repeaterEducationItems = getAcfStringArray(acf, "education_items", credentials);
+  const fixedBioParagraphs = getAcfIndexedStringList(acf, "bio_paragraph", 12);
+  const fixedEducationItems = getAcfIndexedStringList(acf, "education_item", 12);
+  const bioParagraphs = repeaterBioParagraphs.length > 0 ? repeaterBioParagraphs : fixedBioParagraphs;
+  const educationItems = repeaterEducationItems.length > 0 ? repeaterEducationItems : fixedEducationItems;
 
   return (
     <PageLayout>

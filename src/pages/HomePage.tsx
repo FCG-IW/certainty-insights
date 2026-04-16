@@ -44,10 +44,11 @@ const statementFallback =
 export default function HomePage() {
   const { ref: parallaxRef, offset } = useParallax(0.3);
   const { data: acf } = useWordPressAcf("home");
+  const acfRecord = acf ?? {};
 
   const statementLabel = getAcfString(acf, "statement_label", "About");
   const statementContent = getAcfString(acf, "statement_content", statementFallback);
-  const cmsValues = getAcfRecordArray(
+  const repeaterValues = getAcfRecordArray(
     acf,
     "values_items",
     (item, index) => ({
@@ -57,6 +58,16 @@ export default function HomePage() {
     }),
     values,
   );
+
+  const fixedValues = [1, 2, 3]
+    .map((index) => ({
+      number: asCleanString(acfRecord[`values_${index}_number`], String(index).padStart(2, "0")),
+      title: asCleanString(acfRecord[`values_${index}_title`]),
+      description: asCleanString(acfRecord[`values_${index}_description`]),
+    }))
+    .filter((item) => item.title.length > 0 && item.description.length > 0);
+
+  const cmsValues = repeaterValues.length > 0 ? repeaterValues : fixedValues;
 
   return (
     <>

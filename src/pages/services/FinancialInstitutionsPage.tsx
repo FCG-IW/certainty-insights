@@ -6,7 +6,14 @@ import { Link } from "react-router-dom";
 import bannerMark from "@/assets/FCG_BannerMark_Green 1.png";
 import interlockGraphic from "@/assets/interlock-graphic.png";
 import { useWordPressAcf } from "@/hooks/useWordPressAcf";
-import { asCleanString, getAcfRecordArray, getAcfString, getAcfStringArray } from "@/lib/wordpress";
+import {
+  asCleanString,
+  getAcfIndexedRecords,
+  getAcfIndexedStringList,
+  getAcfRecordArray,
+  getAcfString,
+  getAcfStringArray,
+} from "@/lib/wordpress";
 
 const services = [
   { number: "01", name: "COLLATERAL FIELD EXAMINATIONS" },
@@ -40,7 +47,7 @@ export default function FinancialInstitutionsPage() {
 
   const statementLabel = getAcfString(acf, "statement_label", "Expertise");
   const statementContent = getAcfString(acf, "statement_content", statementFallback);
-  const cmsServices = getAcfRecordArray(
+  const repeaterServices = getAcfRecordArray(
     acf,
     "services",
     (item, index) => ({
@@ -49,8 +56,18 @@ export default function FinancialInstitutionsPage() {
     }),
     services,
   );
+  const fixedServices = getAcfIndexedRecords(acf, "service", ["number", "name"], 12)
+    .map((item, index) => ({
+      number: asCleanString(item.number, String(index + 1).padStart(2, "0")),
+      name: asCleanString(item.name),
+    }))
+    .filter((item) => item.name.length > 0);
+  const cmsServices = repeaterServices.length > 0 ? repeaterServices : fixedServices;
+
   const situationsIntro = getAcfString(acf, "situations_intro", situationsFallback);
-  const situationItems = getAcfStringArray(acf, "situations_items", industries);
+  const repeaterSituationItems = getAcfStringArray(acf, "situations_items", industries);
+  const fixedSituationItems = getAcfIndexedStringList(acf, "situation", 20);
+  const situationItems = repeaterSituationItems.length > 0 ? repeaterSituationItems : fixedSituationItems;
 
   return (
     <PageLayout>

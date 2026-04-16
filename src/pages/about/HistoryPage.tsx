@@ -11,6 +11,8 @@ import { Link } from "react-router-dom";
 import { useWordPressAcf } from "@/hooks/useWordPressAcf";
 import {
   asCleanString,
+  getAcfIndexedRecords,
+  getAcfIndexedStringList,
   getAcfRecordArray,
   getAcfString,
   getAcfStringArray,
@@ -72,7 +74,21 @@ export default function HistoryPage() {
 
   const storyHeading = getAcfString(acf, "story_heading", "Our Story");
   const storyLogoUrl = getAcfString(acf, "story_logo_url", "");
-  const storyParagraphs = getAcfStringArray(acf, "story_paragraphs", storyParagraphFallbacks);
+  const repeaterStoryParagraphs = getAcfStringArray(acf, "story_paragraphs", storyParagraphFallbacks);
+
+  const fixedMilestones = getAcfIndexedRecords(acf, "milestone", ["value", "label", "suffix"], 8).map((item) => {
+    const { end, suffix } = parseCountValue(asCleanString(item.value, "0"));
+    return {
+      end,
+      suffix: asCleanString(item.suffix, suffix),
+      label: asCleanString(item.label, "Milestone"),
+    };
+  });
+
+  const cmsMilestonesFinal = cmsMilestones.length > 0 ? cmsMilestones : fixedMilestones;
+
+  const fixedStoryParagraphs = getAcfIndexedStringList(acf, "story_paragraph", 12);
+  const storyParagraphs = repeaterStoryParagraphs.length > 0 ? repeaterStoryParagraphs : fixedStoryParagraphs;
 
   return (
     <PageLayout>
@@ -107,7 +123,7 @@ export default function HistoryPage() {
         <StatementSection  compact>
         <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 text-center">
-            {cmsMilestones.map((item, index) => (
+            {cmsMilestonesFinal.map((item, index) => (
               <Reveal key={item.label} delay={index * 100}>
                 <div>
                   <CountUp

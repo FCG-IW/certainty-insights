@@ -4,11 +4,13 @@ import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useWordPressAcf } from "@/hooks/useWordPressAcf";
+import { asCleanString, getAcfRecordArray, getAcfString } from "@/lib/wordpress";
 import discipline from "@/assets/discipline.jpg";
 import discovery from "@/assets/discovery.jpg";
 import diplomacy from "@/assets/diplomacy.jpg";
 
-const values = [
+const fallbackValues = [
   {
     number: "01",
     title: "Discipline",
@@ -36,6 +38,7 @@ const values = [
 ];
 
 export default function ApproachPage() {
+  const { data: acf } = useWordPressAcf("approach");
   const [activeIndex, setActiveIndex] = useState(2);
   const [isPaused, setIsPaused] = useState(false);
   const [isFading, setIsFading] = useState(false);
@@ -44,6 +47,52 @@ export default function ApproachPage() {
   const rightColumnRef = useRef<HTMLDivElement | null>(null);
   const switchTimeoutRef = useRef<number | null>(null);
   const settleTimeoutRef = useRef<number | null>(null);
+
+  const cmsValues = getAcfRecordArray(
+    acf,
+    "values_items",
+    (item, index) => ({
+      number: asCleanString(item.number, fallbackValues[index % fallbackValues.length]?.number ?? `${index + 1}`),
+      title: asCleanString(item.title, fallbackValues[index % fallbackValues.length]?.title ?? "Value"),
+      image: asCleanString(item.image, fallbackValues[index % fallbackValues.length]?.image ?? ""),
+      imageAlt: asCleanString(
+        item.image_alt,
+        fallbackValues[index % fallbackValues.length]?.imageAlt ?? `${asCleanString(item.title, "Value")} visual`,
+      ),
+      description: asCleanString(
+        item.description,
+        fallbackValues[index % fallbackValues.length]?.description ?? "",
+      ),
+    }),
+    fallbackValues,
+  );
+
+  const values = useMemo(() => {
+    if (cmsValues.length === 0) {
+      return fallbackValues;
+    }
+
+    if (cmsValues.length < fallbackValues.length) {
+      return fallbackValues.map((fallbackValue, index) => cmsValues[index] ?? fallbackValue);
+    }
+
+    return cmsValues;
+  }, [cmsValues]);
+  const heroKicker = getAcfString(acf, "hero_kicker", "About FCG");
+  const heroTitle = getAcfString(acf, "hero_title", "Our Approach");
+  const heroTagline = getAcfString(
+    acf,
+    "hero_tagline",
+    "Partnership, shared expertise, and client-focused success at every step.",
+  );
+  const statementLabel = getAcfString(acf, "statement_label", "Philosophy");
+  const statementContent = getAcfString(
+    acf,
+    "statement_content",
+    "Our core business values are centered on partnership, shared expertise, and client-focused success. We operate as collaborative team players, communicating with clients at every step while upholding the highest standards of integrity and transparency in all our interactions. We share knowledge with lenders investing across the capital structure to help connect the dots.",
+  );
+  const valuesKicker = getAcfString(acf, "values_kicker", "What Drives Us");
+  const valuesHeading = getAcfString(acf, "values_heading", "Our Values");
 
   const scheduleSwitch = useCallback((nextIndex: number) => {
     if (nextIndex === activeIndex || isSwitching) return;
@@ -142,19 +191,19 @@ export default function ApproachPage() {
             <div className="lg:col-span-8">
               <Reveal>
                 <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase text-primary border-l-2 border-primary pl-4 mb-8">
-                  About FCG
+                  {heroKicker}
                 </span>
               </Reveal>
               <Reveal delay={100}>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight text-foreground">
-                  Our Approach
+                  {heroTitle}
                 </h1>
               </Reveal>
             </div>
             <div className="lg:col-span-4">
               <Reveal delay={200}>
                 <p className="text-base md:text-xl text-muted-foreground font-light text-left lg:text-right">
-                  Partnership, shared expertise, and client-focused success at every step.
+                  {heroTagline}
                 </p>
               </Reveal>
             </div>
@@ -162,13 +211,9 @@ export default function ApproachPage() {
         </div>
       </section>
 
-     <StatementSection label="Philosophy">
-            Our core business values are centered on{" "}
-            <span className="text-primary font-medium">partnership</span>,{" "}
-            <span className="text-primary font-medium">shared expertise</span>, and{" "}
-            <span className="text-primary font-medium">client-focused success</span>.{" "}
-            We operate as collaborative team players, communicating with clients at every step while upholding the highest standards of integrity and transparency in all our interactions. We  share knowledge with lenders investing across the capital structure to help connect the dots.
-          </StatementSection>
+      <StatementSection label={statementLabel}>
+        {statementContent}
+      </StatementSection>
 
       {/* Values Grid */}
       <section className="py-24 md:py-32">
@@ -176,10 +221,10 @@ export default function ApproachPage() {
           <Reveal>
             <div className="mb-16">
               <span className="inline-block text-sm tracking-[0.2em] uppercase text-primary mb-4">
-                What Drives Us
+                {valuesKicker}
               </span>
               <h2 className="text-4xl md:text-5xl font-bold text-foreground">
-                Our Values
+                {valuesHeading}
               </h2>
             </div>
           </Reveal>

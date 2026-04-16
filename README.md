@@ -15,7 +15,7 @@ For deployment, use your preferred hosting provider (Vercel, Netlify, Azure, etc
 
 ## Headless WordPress CMS Integration
 
-The frontend now supports page content from WordPress (via WP REST API + ACF).
+The frontend now supports page content from WordPress (via WP REST API + a custom FCG CMS plugin).
 
 ### Environment
 
@@ -29,16 +29,16 @@ The app also accepts `VITE_WP_API_BASE` as an alternative.
 
 ### WordPress Requirements
 
-1. Install and activate `Advanced Custom Fields`.
-2. Install and activate `ACF to REST API` (or equivalent) so `acf` is available in `/wp-json/wp/v2/pages`.
-3. Create WordPress pages with these slugs:
+1. Create WordPress pages with these slugs:
 	 - `home`
 	 - `history`
 	 - `founder`
 	 - `financial-institutions`
 	 - `government`
 
-### ACF Field Schema
+ACF is no longer required.
+
+### Field Schema
 
 #### Home (`home`)
 
@@ -116,3 +116,29 @@ The app also accepts `VITE_WP_API_BASE` as an alternative.
 	- `description` (text)
 
 If WordPress data is unavailable or fields are empty, the app falls back to existing hardcoded content.
+
+### Custom CMS Toolkit
+
+If you want a fully controlled custom WordPress setup, use:
+
+- Blueprint: `docs/acf-free-blueprint.md`
+- Custom CMS plugin: `scripts/wordpress/fcg-cms-control.php`
+- Bootstrap plugin: `scripts/wordpress/fcg-cms-bootstrap.php`
+- Legacy ACF plugin: `scripts/wordpress/register-acf-fields.php` (no longer needed)
+
+### Turbify No-CLI Automation
+
+If SSH/WP-CLI is unavailable on hosting, you can still automate setup:
+
+1. Upload `scripts/wordpress/fcg-cms-control.php` to `wp-content/plugins/fcg-cms-control/fcg-cms-control.php`.
+2. Activate "FCG CMS Control" in WordPress Admin > Plugins.
+3. Deactivate the old ACF-based FCG plugin if it is still active.
+4. Upload `scripts/wordpress/fcg-cms-bootstrap.php` to `wp-content/plugins/fcg-cms-bootstrap/fcg-cms-bootstrap.php` if you want a separate bootstrap tool.
+5. Activate "FCG CMS Bootstrap" in WordPress Admin > Plugins if installed.
+6. Open Tools > FCG CMS Control and click "Run Bootstrap Again".
+
+This will:
+
+- Set permalink format to `/%postname%/`
+- Create required pages with expected slugs
+- Seed starter custom fields and repeaters for each page

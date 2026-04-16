@@ -2,7 +2,12 @@ import { PageLayout } from "@/components/layout";
 import { Reveal } from "@/hooks/useScrollReveal";
 import StatementSection from "@/components/ui/StatementSection";
 import { useWordPressAcf } from "@/hooks/useWordPressAcf";
-import { asCleanString, getAcfRecordArray, getAcfString } from "@/lib/wordpress";
+import {
+  asCleanString,
+  getAcfIndexedRecords,
+  getAcfRecordArray,
+  getAcfString,
+} from "@/lib/wordpress";
 
 import { 
   ArrowRight, 
@@ -75,7 +80,7 @@ export default function GovernmentPage() {
     "Government agencies operate under heightened expectations for transparency, accountability, and stewardship of public resources, and FCG is built to support those mandates. We can work with procurement officers and financial personnel from federal, state, and local agencies to support their decision-making. We verify regulatory compliance and contract performance of vendors, grantees, and awardees of government contracts to strengthen accountability. For complex financial concerns, our Forensic Accounting and Fraud Investigations specialists provide precise, defensible analyses that help detect fraud, support enforcement actions, and safeguard taxpayer dollars. Together, these services help agencies reduce risk, protect resources, and maintain public trust.",
   );
 
-  const cmsServices = getAcfRecordArray(
+  const repeaterServices = getAcfRecordArray(
     acf,
     "services",
     (item, index) => ({
@@ -84,6 +89,14 @@ export default function GovernmentPage() {
     }),
     services,
   );
+
+  const fixedServices = getAcfIndexedRecords(acf, "service", ["number", "name"], 12)
+    .map((item, index) => ({
+      number: asCleanString(item.number, String(index + 1).padStart(2, "0")),
+      name: asCleanString(item.name),
+    }))
+    .filter((item) => item.name.length > 0);
+  const cmsServices = repeaterServices.length > 0 ? repeaterServices : fixedServices;
 
   const credentialsKicker = getAcfString(acf, "credentials_kicker", "Credentials");
   const credentialsHeading = getAcfString(acf, "credentials_heading", "Government Firm Certifications");
@@ -94,7 +107,7 @@ export default function GovernmentPage() {
   const naicsHeading = getAcfString(acf, "naics_heading", "NAICS Codes");
   const nigpHeading = getAcfString(acf, "nigp_heading", "NIGP Codes");
 
-  const cmsNaics = getAcfRecordArray(
+  const repeaterNaics = getAcfRecordArray(
     acf,
     "naics_codes",
     (item) => ({
@@ -103,7 +116,15 @@ export default function GovernmentPage() {
     }),
     naicsCodes,
   );
-  const cmsNigp = getAcfRecordArray(
+  const fixedNaics = getAcfIndexedRecords(acf, "naics", ["code", "description"], 20)
+    .map((item) => ({
+      code: asCleanString(item.code),
+      description: asCleanString(item.description),
+    }))
+    .filter((item) => item.code.length > 0 && item.description.length > 0);
+  const cmsNaics = repeaterNaics.length > 0 ? repeaterNaics : fixedNaics;
+
+  const repeaterNigp = getAcfRecordArray(
     acf,
     "nigp_codes",
     (item) => ({
@@ -112,9 +133,16 @@ export default function GovernmentPage() {
     }),
     nigpCodes,
   );
+  const fixedNigp = getAcfIndexedRecords(acf, "nigp", ["code", "description"], 30)
+    .map((item) => ({
+      code: asCleanString(item.code),
+      description: asCleanString(item.description),
+    }))
+    .filter((item) => item.code.length > 0 && item.description.length > 0);
+  const cmsNigp = repeaterNigp.length > 0 ? repeaterNigp : fixedNigp;
 
   const socioeconomicHeading = getAcfString(acf, "socioeconomic_heading", "Social Economic Certifications");
-  const cmsSocioeconomic = getAcfRecordArray(
+  const repeaterSocioeconomic = getAcfRecordArray(
     acf,
     "socioeconomic_certifications",
     (item, index) => ({
@@ -124,6 +152,19 @@ export default function GovernmentPage() {
     }),
     socioeconomicCertifications,
   );
+  const fixedSocioeconomic = getAcfIndexedRecords(
+    acf,
+    "socioeconomic",
+    ["number", "title", "description"],
+    20,
+  )
+    .map((item, index) => ({
+      number: asCleanString(item.number, String(index + 1).padStart(2, "0")),
+      title: asCleanString(item.title),
+      description: asCleanString(item.description),
+    }))
+    .filter((item) => item.title.length > 0);
+  const cmsSocioeconomic = repeaterSocioeconomic.length > 0 ? repeaterSocioeconomic : fixedSocioeconomic;
 
   return (
     <PageLayout>
