@@ -11,7 +11,37 @@ npm run dev
 
 This project uses Vite, React and Tailwind CSS.
 
-For deployment, use your preferred hosting provider (Vercel, Netlify, Azure, etc.).
+## Deployment
+
+### Netlify
+
+1. Create a new site on Netlify and connect your GitHub repo.
+2. Build settings should auto-detect:
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+3. Set environment variables in Netlify UI (Site Settings > Build & Deploy > Environment):
+   - `VITE_WORDPRESS_URL` = your WordPress URL (e.g., `https://your-turbify-domain.com`)
+4. SPA routing is configured via `netlify.toml`.
+5. Deploy and verify at your Netlify domain.
+
+### Vercel
+
+1. Create a new project on Vercel and import your GitHub repo.
+2. Framework preset should auto-detect as Vite.
+3. Override build settings if needed:
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+4. Add environment variables in Vercel (Settings > Environment Variables):
+   - `VITE_WORDPRESS_URL` = your WordPress URL
+5. SPA routing works by default on Vercel.
+6. Deploy and verify at your Vercel domain.
+
+### Other Hosts (Turbify, etc.)
+
+Static hosting works if you can:
+1. Upload `dist/` folder contents to your web root.
+2. Configure SPA rewrite rules (fallback to `index.html` for non-file routes).
+3. Set environment variables before build or via `.env` file.
 
 ## Headless WordPress CMS Integration
 
