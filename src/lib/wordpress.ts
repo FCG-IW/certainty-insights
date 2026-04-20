@@ -6,6 +6,22 @@ interface WordPressPageResponse {
   acf?: WordPressAcf;
 }
 
+interface WordPressLeadSubmission {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  page_url?: string;
+  referrer?: string;
+  source?: string;
+  website?: string;
+}
+
+interface WordPressLeadResponse {
+  id: number;
+  message?: string;
+}
+
 function stripTrailingSlash(url: string): string {
   return url.replace(/\/+$/, "");
 }
@@ -38,6 +54,30 @@ export async function fetchWordPressPageAcf(slug: string): Promise<WordPressAcf 
 
   const pages = (await response.json()) as WordPressPageResponse[];
   return pages[0]?.acf ?? null;
+}
+
+export async function submitWordPressLead(payload: WordPressLeadSubmission): Promise<WordPressLeadResponse> {
+  const apiBase = getWordPressApiBase();
+  if (!apiBase) {
+    throw new Error('WordPress CMS is not configured.');
+  }
+
+  const response = await fetch(`${apiBase}/wp-json/fcg/v1/leads`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const data = (await response.json().catch(() => ({}))) as WordPressLeadResponse & { message?: string };
+
+  if (!response.ok) {
+    throw new Error(data.message ?? `Failed to submit lead (HTTP ${response.status})`);
+  }
+
+  return data;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

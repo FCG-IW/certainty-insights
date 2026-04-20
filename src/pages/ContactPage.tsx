@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { PageLayout } from "@/components/layout";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,7 @@ import { ArrowRight, CheckCircle, Mail } from "lucide-react";
 import { Reveal } from "@/hooks/useScrollReveal";
 import interlockGraphic from "@/assets/interlock-graphic.png";
 import employmentImage from "@/assets/employment.png";
+import { submitWordPressLead } from "@/lib/wordpress";
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -21,17 +22,41 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
+
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    toast({
-      title: "Message sent",
-      description: "Thank you for contacting us. We'll respond shortly.",
-    });
-    setIsSubmitted(true);
-    setFormData({ name: "", email: "", phone: "", message: "" });
-    setIsSubmitting(false);
+    try {
+      await submitWordPressLead({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        source: "contact-page",
+        page_url: window.location.href,
+        referrer: document.referrer,
+        website: "",
+      });
+
+      toast({
+        title: "Message sent",
+        description: "Thank you for contacting us. We'll respond shortly.",
+      });
+      setIsSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "We could not send your message. Please try again.";
+      toast({
+        title: "Message not sent",
+        description: message,
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

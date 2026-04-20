@@ -112,32 +112,6 @@ function fcg_cms_control_schema(): array
                         ['name' => 'number', 'label' => 'Number', 'type' => 'text'],
                         ['name' => 'title', 'label' => 'Title', 'type' => 'text'],
                         ['name' => 'image', 'label' => 'Image', 'type' => 'image'],
-                'approach' => [
-                    'title' => 'FCG Approach Content',
-                    'fields' => [
-                        ['name' => 'hero_kicker', 'label' => 'Hero Kicker', 'type' => 'text'],
-                        ['name' => 'hero_title', 'label' => 'Hero Title', 'type' => 'text'],
-                        ['name' => 'hero_tagline', 'label' => 'Hero Tagline', 'type' => 'textarea'],
-                        ['name' => 'statement_label', 'label' => 'Statement Label', 'type' => 'text'],
-                        ['name' => 'statement_content', 'label' => 'Statement Content', 'type' => 'textarea'],
-                        ['name' => 'values_kicker', 'label' => 'Values Kicker', 'type' => 'text'],
-                        ['name' => 'values_heading', 'label' => 'Values Heading', 'type' => 'text'],
-                    ],
-                    'repeaters' => [
-                        [
-                            'name' => 'values_items',
-                            'label' => 'Values Items',
-                            'rows' => 3,
-                            'columns' => [
-                                ['name' => 'number', 'label' => 'Number', 'type' => 'text'],
-                                ['name' => 'title', 'label' => 'Title', 'type' => 'text'],
-                                ['name' => 'image', 'label' => 'Image', 'type' => 'image'],
-                                ['name' => 'image_alt', 'label' => 'Image Alt', 'type' => 'text'],
-                                ['name' => 'description', 'label' => 'Description', 'type' => 'textarea'],
-                            ],
-                        ],
-                    ],
-                ],
                         ['name' => 'image_alt', 'label' => 'Image Alt', 'type' => 'text'],
                         ['name' => 'description', 'label' => 'Description', 'type' => 'textarea'],
                     ],
@@ -281,6 +255,170 @@ function fcg_cms_control_get_schema_for_post(int $post_id): ?array
     $schema = fcg_cms_control_schema();
     return $schema[$slug] ?? null;
 }
+
+function fcg_cms_control_register_lead_post_type(): void
+{
+    register_post_type('fcg_lead', [
+        'labels' => [
+            'name' => 'Leads',
+            'singular_name' => 'Lead',
+            'add_new_item' => 'Add New Lead',
+            'edit_item' => 'Edit Lead',
+            'view_item' => 'View Lead',
+            'search_items' => 'Search Leads',
+            'not_found' => 'No leads found',
+            'not_found_in_trash' => 'No leads found in trash',
+            'menu_name' => 'Leads',
+        ],
+        'public' => false,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_rest' => true,
+        'supports' => ['title'],
+        'capability_type' => 'post',
+        'map_meta_cap' => true,
+        'has_archive' => false,
+        'rewrite' => false,
+        'exclude_from_search' => true,
+        'menu_icon' => 'dashicons-email-alt2',
+    ]);
+}
+add_action('init', 'fcg_cms_control_register_lead_post_type');
+
+function fcg_cms_control_lead_admin_columns(array $columns): array
+{
+    return [
+        'cb' => $columns['cb'],
+        'title' => 'Name',
+        'lead_email' => 'Email',
+        'lead_phone' => 'Phone',
+        'lead_source' => 'Source',
+        'date' => 'Submitted',
+    ];
+}
+add_filter('manage_edit-fcg_lead_columns', 'fcg_cms_control_lead_admin_columns');
+
+function fcg_cms_control_lead_admin_column_content(string $column, int $post_id): void
+{
+    if ($column === 'lead_email') {
+        echo esc_html((string) get_post_meta($post_id, 'lead_email', true));
+        return;
+    }
+
+    if ($column === 'lead_phone') {
+        echo esc_html((string) get_post_meta($post_id, 'lead_phone', true));
+        return;
+    }
+
+    if ($column === 'lead_source') {
+        echo esc_html((string) get_post_meta($post_id, 'lead_source', true));
+    }
+}
+add_action('manage_fcg_lead_posts_custom_column', 'fcg_cms_control_lead_admin_column_content', 10, 2);
+
+function fcg_cms_control_render_lead_metabox(WP_Post $post): void
+{
+    $fields = [
+        'lead_name' => 'Name',
+        'lead_email' => 'Email',
+        'lead_phone' => 'Phone',
+        'lead_message' => 'Message',
+        'lead_source' => 'Source',
+        'lead_page_url' => 'Page URL',
+        'lead_referrer' => 'Referrer',
+        'lead_ip_address' => 'IP Address',
+        'lead_user_agent' => 'User Agent',
+    ];
+
+    echo '<div style="display:grid; gap:12px;">';
+    foreach ($fields as $meta_key => $label) {
+        $value = (string) get_post_meta($post->ID, $meta_key, true);
+        if ($meta_key === 'lead_message') {
+            echo '<div><strong>' . esc_html($label) . ':</strong><div style="margin-top:6px; white-space:pre-wrap;">' . esc_html($value) . '</div></div>';
+            continue;
+        }
+
+        echo '<div><strong>' . esc_html($label) . ':</strong><div style="margin-top:4px;">' . esc_html($value) . '</div></div>';
+    }
+    echo '</div>';
+}
+
+add_action('add_meta_boxes_fcg_lead', function (): void {
+    add_meta_box(
+        'fcg_lead_details',
+        'Lead Details',
+        function (WP_Post $post): void {
+            fcg_cms_control_render_lead_metabox($post);
+        },
+        'fcg_lead',
+        'normal',
+        'default'
+    );
+});
+
+function fcg_cms_control_create_lead(WP_REST_Request $request)
+{
+    $params = $request->get_json_params();
+    if (!is_array($params)) {
+        $params = $request->get_params();
+    }
+
+    $honeypot = isset($params['website']) ? trim((string) $params['website']) : '';
+    if ($honeypot !== '') {
+        return new WP_REST_Response(['message' => 'Spam detected.'], 400);
+    }
+
+    $name = sanitize_text_field((string) ($params['name'] ?? ''));
+    $email = sanitize_email((string) ($params['email'] ?? ''));
+    $phone = sanitize_text_field((string) ($params['phone'] ?? ''));
+    $message = sanitize_textarea_field((string) ($params['message'] ?? ''));
+
+    if ($name === '' || $email === '' || !is_email($email) || $message === '') {
+        return new WP_REST_Response(['message' => 'Please complete all required fields.'], 400);
+    }
+
+    $source = sanitize_text_field((string) ($params['source'] ?? 'contact-form'));
+    $page_url = esc_url_raw((string) ($params['page_url'] ?? ''));
+    $referrer = esc_url_raw((string) ($params['referrer'] ?? ''));
+    $ip_address = sanitize_text_field((string) ($_SERVER['REMOTE_ADDR'] ?? ''));
+    $user_agent = sanitize_text_field((string) ($_SERVER['HTTP_USER_AGENT'] ?? ''));
+
+    $post_id = wp_insert_post([
+        'post_type' => 'fcg_lead',
+        'post_status' => 'private',
+        'post_title' => $name,
+        'post_content' => $message,
+    ], true);
+
+    if (is_wp_error($post_id)) {
+        return new WP_REST_Response(['message' => $post_id->get_error_message()], 500);
+    }
+
+    update_post_meta($post_id, 'lead_name', $name);
+    update_post_meta($post_id, 'lead_email', $email);
+    update_post_meta($post_id, 'lead_phone', $phone);
+    update_post_meta($post_id, 'lead_message', $message);
+    update_post_meta($post_id, 'lead_source', $source);
+    update_post_meta($post_id, 'lead_page_url', $page_url);
+    update_post_meta($post_id, 'lead_referrer', $referrer);
+    update_post_meta($post_id, 'lead_ip_address', $ip_address);
+    update_post_meta($post_id, 'lead_user_agent', $user_agent);
+
+    return new WP_REST_Response([
+        'id' => (int) $post_id,
+        'message' => 'Lead captured successfully.',
+    ], 201);
+}
+
+function fcg_cms_control_register_rest_routes(): void
+{
+    register_rest_route('fcg/v1', '/leads', [
+        'methods' => WP_REST_Server::CREATABLE,
+        'callback' => 'fcg_cms_control_create_lead',
+        'permission_callback' => '__return_true',
+    ]);
+}
+add_action('rest_api_init', 'fcg_cms_control_register_rest_routes');
 
 function fcg_cms_control_seed_defaults(): void
 {
@@ -537,12 +675,13 @@ function fcg_cms_control_render_image_field(string $field_name, string $label, s
 function fcg_cms_control_render_input(array $field, $value): string
 {
     $name = (string) $field['name'];
+    $input_name = 'fcg_control[' . $name . ']';
     $label = (string) $field['label'];
     $type = $field['type'] ?? 'text';
     $value = is_scalar($value) ? (string) $value : '';
 
     if ($type === 'image') {
-        return fcg_cms_control_render_image_field($name, $label, $value, $name);
+        return fcg_cms_control_render_image_field($input_name, $label, $value, $name);
     }
 
     ob_start();
@@ -550,9 +689,9 @@ function fcg_cms_control_render_input(array $field, $value): string
     <p style="margin: 0 0 12px;">
         <label style="display:block; font-weight:600; margin-bottom:6px;" for="<?php echo esc_attr($name); ?>"><?php echo esc_html($label); ?></label>
         <?php if ($type === 'textarea') : ?>
-            <textarea class="widefat" rows="4" id="<?php echo esc_attr($name); ?>" name="<?php echo esc_attr($name); ?>"><?php echo esc_textarea($value); ?></textarea>
+            <textarea class="widefat" rows="4" id="<?php echo esc_attr($name); ?>" name="<?php echo esc_attr($input_name); ?>"><?php echo esc_textarea($value); ?></textarea>
         <?php else : ?>
-            <input class="widefat" type="<?php echo esc_attr($type); ?>" id="<?php echo esc_attr($name); ?>" name="<?php echo esc_attr($name); ?>" value="<?php echo esc_attr($value); ?>" />
+            <input class="widefat" type="<?php echo esc_attr($type); ?>" id="<?php echo esc_attr($name); ?>" name="<?php echo esc_attr($input_name); ?>" value="<?php echo esc_attr($value); ?>" />
         <?php endif; ?>
     </p>
     <?php
