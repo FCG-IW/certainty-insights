@@ -1,7 +1,8 @@
 import { Handler } from '@netlify/functions';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface LeadData {
   name: string;
@@ -19,6 +20,13 @@ const handler: Handler = async (event) => {
   }
 
   try {
+    if (!resend) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'RESEND_API_KEY is not configured' })
+      };
+    }
+
     const body = JSON.parse(event.body || '{}');
     const { name, email, phone, message } = body as LeadData;
 
@@ -45,13 +53,24 @@ const handler: Handler = async (event) => {
       `
     });
 
-    console.log('Email sent successfully:', result.id);
+    if (result.error) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          success: false,
+          error: result.error.message || 'Failed to send email'
+        })
+      };
+    }
+
+    const emailId = result.data?.id;
+    console.log('Email sent successfully:', emailId || '(no id returned)');
 
     return {
       statusCode: 200,
       body: JSON.stringify({
         success: true,
-        id: result.id,
+        id: emailId ?? null,
         message: 'Email sent successfully'
       })
     };
