@@ -3,11 +3,12 @@
 [build]
 command = "npm run build"
 publish = "dist"
+functions = "netlify/functions"
 
 # Environment variables for the build
 # Set these in Netlify UI: Site Settings > Build & Deploy > Environment
 # VITE_WORDPRESS_URL should point to your Turbify WordPress site
-# Example: https://your-turbify-domain.com
+# RESEND_API_KEY should be set in Netlify environment variables (keep this SECRET)
 
 [[redirects]]
 from = "/*"

@@ -1,15 +1,3 @@
-import { Resend } from 'resend';
-
-const apiKey = import.meta.env.VITE_RESEND_API_KEY;
-
-if (!apiKey) {
-  console.warn(
-    'VITE_RESEND_API_KEY is not set. Email notifications will not be sent.'
-  );
-}
-
-const resend = apiKey ? new Resend(apiKey) : null;
-
 export interface EmailPayload {
   name: string;
   email: string;
@@ -17,47 +5,38 @@ export interface EmailPayload {
   message: string;
 }
 
+/**
+ * Send a lead notification email via Netlify Function
+ * The email is sent server-side to keep the Resend API key secure
+ */
 export async function sendLeadNotification(lead: EmailPayload) {
-  if (!resend) {
-    console.warn('Resend client not initialized. Email not sent.');
-    return { success: false, error: 'Email service not configured' };
-  }
-
   try {
-    const result = await resend.emails.send({
-      from: 'noreply@financialcompliancegroup.com',
-      to: 'dev@financialcompliancegroup.com',
-      subject: `New Lead: ${lead.name}`,
-      html: `
-        <h2>New Lead Submission</h2>
-        <p><strong>Name:</strong> ${escapeHtml(lead.name)}</p>
-        <p><strong>Email:</strong> <a href="mailto:${escapeHtml(lead.email)}">${escapeHtml(lead.email)}</a></p>
-        <p><strong>Phone:</strong> ${escapeHtml(lead.phone)}</p>
-        <p><strong>Message:</strong></p>
-        <p>${escapeHtml(lead.message).replace(/\n/g, '<br>')}</p>
-      `
+    const response = await fetch('/.netlify/functions/send-lead-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(lead),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || `Email service error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('Lead notification sent:', data.id);
 
     return {
       success: true,
-      id: result.id
+      id: data.id,
     };
   } catch (error) {
     console.error('Failed to send lead notification:', error);
+    // Don't throw - log the error but don't block the lead submission
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
-}
-
-function escapeHtml(text: string): string {
-  const map: { [key: string]: string } = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#039;'
-  };
-  return text.replace(/[&<>"']/g, (m) => map[m]);
 }
