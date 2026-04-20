@@ -10,6 +10,7 @@ import { Reveal } from "@/hooks/useScrollReveal";
 import interlockGraphic from "@/assets/interlock-graphic.png";
 import employmentImage from "@/assets/employment.png";
 import { submitWordPressLead } from "@/lib/wordpress";
+import { sendLeadNotification } from "@/lib/email";
 
 export default function ContactPage() {
   const { toast } = useToast();
@@ -30,6 +31,7 @@ export default function ContactPage() {
 
     setIsSubmitting(true);
     try {
+      // Save lead to WordPress
       await submitWordPressLead({
         name: formData.name,
         email: formData.email,
@@ -39,6 +41,14 @@ export default function ContactPage() {
         page_url: window.location.href,
         referrer: document.referrer,
         website: "",
+      });
+
+      // Send notification email
+      await sendLeadNotification({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
       });
 
       toast({
