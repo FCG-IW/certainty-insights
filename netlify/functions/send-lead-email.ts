@@ -40,8 +40,9 @@ const handler: Handler = async (event) => {
 
     // Send email via Resend
     const result = await resend.emails.send({
-      from: 'noreply@financialcompliancegroup.com',
+      from: 'onboarding@resend.dev',
       to: 'dev@financialcompliancegroup.com',
+      replyTo: email,
       subject: `New Lead: ${name}`,
       html: `
         <h2>New Lead Submission</h2>
