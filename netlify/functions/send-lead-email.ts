@@ -1,16 +1,18 @@
 import { Handler } from '@netlify/functions';
 import * as nodemailer from 'nodemailer';
 
-const smtpHost = process.env.SMTP_HOST || 'smtp.mail.yahoo.com';
-const smtpPort = Number(process.env.SMTP_PORT || '465');
-const smtpSecure = (process.env.SMTP_SECURE || 'true').toLowerCase() === 'true';
+const smtpHost = process.env.SMTP_HOST;
+const smtpPort = Number(process.env.SMTP_PORT);
+const smtpSecureRaw = process.env.SMTP_SECURE;
+const smtpSecure = smtpSecureRaw ? smtpSecureRaw.toLowerCase() === 'true' : undefined;
 const smtpUser = process.env.SMTP_USER;
 const smtpPass = process.env.SMTP_PASS;
 const smtpFromName = process.env.SMTP_FROM_NAME;
 const mailFrom = process.env.SMTP_FROM || smtpUser;
-const mailTo = process.env.LEAD_NOTIFICATION_TO || 'dcampbell@financialcompliancegroup.com';
+const primaryRecipient = process.env.LEAD_NOTIFICATION_TO;
+const backupRecipient = process.env.LEAD_NOTIFICATION_TO_FALLBACK || '';
 
-const transporter = smtpUser && smtpPass
+const transporter = smtpHost && Number.isFinite(smtpPort) && typeof smtpSecure === 'boolean' && smtpUser && smtpPass
   ? nodemailer.createTransport({
       host: smtpHost,
       port: smtpPort,
@@ -29,6 +31,11 @@ interface LeadData {
   message: string;
 }
 
+interface SmtpError extends Error {
+  responseCode?: number;
+  response?: string;
+}
+
 const handler: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return {
@@ -38,11 +45,21 @@ const handler: Handler = async (event) => {
   }
 
   try {
-    if (!transporter || !mailFrom) {
+    const missingVars = [
+      ['SMTP_HOST', smtpHost],
+      ['SMTP_PORT', process.env.SMTP_PORT],
+      ['SMTP_SECURE', smtpSecureRaw],
+      ['SMTP_USER', smtpUser],
+      ['SMTP_PASS', smtpPass],
+      ['SMTP_FROM', mailFrom],
+      ['LEAD_NOTIFICATION_TO', primaryRecipient]
+    ].filter(([, value]) => !value).map(([name]) => name);
+
+    if (!transporter || missingVars.length > 0) {
       return {
         statusCode: 500,
         body: JSON.stringify({
-          error: 'SMTP is not configured. Set SMTP_USER, SMTP_PASS, and optionally SMTP_FROM.'
+          error: `SMTP is not configured. Missing required variables: ${missingVars.join(', ')}`
         })
       };
     }
@@ -82,14 +99,30 @@ const handler: Handler = async (event) => {
       timeStyle: 'short'
     });
 
-    const info = await transporter.sendMail({
+    const safeFrom = mailFrom as string;
+    const safePrimaryRecipient = primaryRecipient as string;
+
+    const recipients = [safePrimaryRecipient, backupRecipient]
+      .map((recipient) => recipient.trim())
+      .filter((recipient, index, arr) => recipient.length > 0 && arr.indexOf(recipient) === index);
+
+    if (recipients.length === 0) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          success: false,
+          error: 'No recipient is configured. Set LEAD_NOTIFICATION_TO.'
+        })
+      };
+    }
+
+    const mailOptions: nodemailer.SendMailOptions = {
       from: smtpFromName
         ? {
             name: smtpFromName,
-            address: mailFrom
+            address: safeFrom
           }
-        : mailFrom,
-      to: mailTo,
+        : safeFrom,
       replyTo: email,
       subject: `New Lead: ${name}`,
       text: [
@@ -159,7 +192,41 @@ const handler: Handler = async (event) => {
           </table>
         </div>
       `
-    });
+
+    };
+
+    let info: nodemailer.SentMessageInfo | null = null;
+    let lastError: SmtpError | null = null;
+
+    for (const recipient of recipients) {
+      try {
+        info = await transporter.sendMail({
+          ...mailOptions,
+          to: recipient
+        });
+        console.log('Email sent successfully to recipient:', recipient);
+        break;
+      } catch (error) {
+        lastError = error as SmtpError;
+        console.error('SMTP send failed for recipient:', recipient, {
+          message: lastError.message,
+          responseCode: lastError.responseCode,
+          response: lastError.response
+        });
+      }
+    }
+
+    if (!info) {
+      const smtpErrorMessage = lastError?.response || lastError?.message || 'Failed to send email';
+
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          success: false,
+          error: `Message failed: ${smtpErrorMessage}`
+        })
+      };
+    }
 
     const emailId = info.messageId;
     console.log('Email sent successfully:', emailId || '(no id returned)');
