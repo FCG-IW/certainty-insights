@@ -26,6 +26,10 @@ function stripTrailingSlash(url: string): string {
   return url.replace(/\/+$/, "");
 }
 
+function getWordPressProxyBase(): string {
+  return "/.netlify/functions/wordpress-proxy";
+}
+
 export function getWordPressApiBase(): string {
   const base = import.meta.env.VITE_WORDPRESS_URL ?? import.meta.env.VITE_WP_API_BASE ?? "";
   return base ? stripTrailingSlash(base) : "";
@@ -36,12 +40,11 @@ export function cmsEnabled(): boolean {
 }
 
 export async function fetchWordPressPageAcf(slug: string): Promise<WordPressAcf | null> {
-  const apiBase = getWordPressApiBase();
-  if (!apiBase) {
+  if (!slug.trim()) {
     return null;
   }
 
-  const url = `${apiBase}/wp-json/wp/v2/pages?slug=${encodeURIComponent(slug)}&_fields=id,slug,acf`;
+  const url = `${getWordPressProxyBase()}?action=page&slug=${encodeURIComponent(slug)}`;
   const response = await fetch(url, {
     headers: {
       Accept: "application/json",
@@ -57,12 +60,7 @@ export async function fetchWordPressPageAcf(slug: string): Promise<WordPressAcf 
 }
 
 export async function submitWordPressLead(payload: WordPressLeadSubmission): Promise<WordPressLeadResponse> {
-  const apiBase = getWordPressApiBase();
-  if (!apiBase) {
-    throw new Error('WordPress CMS is not configured.');
-  }
-
-  const response = await fetch(`${apiBase}/wp-json/fcg/v1/leads`, {
+  const response = await fetch(`${getWordPressProxyBase()}?action=lead`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

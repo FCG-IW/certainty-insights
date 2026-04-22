@@ -12,20 +12,97 @@ import employmentImage from "@/assets/employment.png";
 import { submitWordPressLead } from "@/lib/wordpress";
 import { sendLeadNotification } from "@/lib/email";
 
+type ContactFormData = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+};
+
+type ContactFormErrors = Partial<Record<keyof ContactFormData, string>>;
+
+const initialFormData: ContactFormData = {
+  name: "",
+  email: "",
+  phone: "",
+  message: "",
+};
+
+function validateField(field: keyof ContactFormData, value: string): string {
+  const trimmed = value.trim();
+
+  if (field === "name") {
+    if (!trimmed) return "Please enter your name.";
+    if (trimmed.length < 2) return "Name must be at least 2 characters.";
+    return "";
+  }
+
+  if (field === "email") {
+    if (!trimmed) return "Please enter your email address.";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(trimmed) ? "" : "Please enter a valid email address.";
+  }
+
+  if (field === "phone") {
+    if (!trimmed) return "";
+    const digits = trimmed.replace(/\D/g, "");
+    return digits.length >= 10 ? "" : "Phone number must include at least 10 digits.";
+  }
+
+  if (!trimmed) return "Please tell us how we can help.";
+  if (trimmed.length < 10) return "Message must be at least 10 characters.";
+  return "";
+}
+
+function validateForm(data: ContactFormData): ContactFormErrors {
+  return {
+    name: validateField("name", data.name),
+    email: validateField("email", data.email),
+    phone: validateField("phone", data.phone),
+    message: validateField("message", data.message),
+  };
+}
+
 export default function ContactPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState<ContactFormData>(initialFormData);
+  const [errors, setErrors] = useState<ContactFormErrors>({});
+
+  const handleFieldChange = (field: keyof ContactFormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+
+    if (errors[field]) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: validateField(field, value),
+      }));
+    }
+  };
+
+  const handleFieldBlur = (field: keyof ContactFormData) => {
+    setErrors((prev) => ({
+      ...prev,
+      [field]: validateField(field, formData[field]),
+    }));
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSubmitting) {
+      return;
+    }
+
+    const nextErrors = validateForm(formData);
+    setErrors(nextErrors);
+
+    if (Object.values(nextErrors).some((error) => Boolean(error))) {
+      toast({
+        title: "Please check the form",
+        description: "Fix the highlighted fields and try again.",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -56,7 +133,8 @@ export default function ContactPage() {
         description: "Thank you for contacting us. We'll respond shortly.",
       });
       setIsSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", message: "" });
+      setFormData(initialFormData);
+      setErrors({});
     } catch (error) {
       const message = error instanceof Error ? error.message : "We could not send your message. Please try again.";
       toast({
@@ -127,7 +205,7 @@ export default function ContactPage() {
                 </Reveal>
               ) : (
                 <Reveal delay={100}>
-                  <form onSubmit={handleSubmit} className="space-y-8">
+                  <form onSubmit={handleSubmit} className="space-y-8" noValidate>
                     <div className="grid md:grid-cols-2 gap-8">
                       <div className="space-y-3">
                         <Label htmlFor="name" className="text-sm tracking-wide uppercase text-muted-foreground">
@@ -136,11 +214,16 @@ export default function ContactPage() {
                         <Input
                           id="name"
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          required
+                          onChange={(e) => handleFieldChange("name", e.target.value)}
+                          onBlur={() => handleFieldBlur("name")}
                           placeholder="Your full name"
+                          aria-invalid={Boolean(errors.name)}
+                          aria-describedby={errors.name ? "name-error" : undefined}
                           className="h-14 border-0 border-b-2 border-border rounded-none bg-transparent px-0 text-lg focus:border-primary focus-visible:ring-0 transition-colors"
                         />
+                        {errors.name && (
+                          <p id="name-error" className="text-sm text-destructive">{errors.name}</p>
+                        )}
                       </div>
                       <div className="space-y-3">
                         <Label htmlFor="email" className="text-sm tracking-wide uppercase text-muted-foreground">
@@ -150,11 +233,16 @@ export default function ContactPage() {
                           id="email"
                           type="email"
                           value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          required
+                          onChange={(e) => handleFieldChange("email", e.target.value)}
+                          onBlur={() => handleFieldBlur("email")}
                           placeholder="you@company.com"
+                          aria-invalid={Boolean(errors.email)}
+                          aria-describedby={errors.email ? "email-error" : undefined}
                           className="h-14 border-0 border-b-2 border-border rounded-none bg-transparent px-0 text-lg focus:border-primary focus-visible:ring-0 transition-colors"
                         />
+                        {errors.email && (
+                          <p id="email-error" className="text-sm text-destructive">{errors.email}</p>
+                        )}
                       </div>
                     </div>
 
@@ -166,10 +254,16 @@ export default function ContactPage() {
                         id="phone"
                         type="tel"
                         value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        onChange={(e) => handleFieldChange("phone", e.target.value)}
+                        onBlur={() => handleFieldBlur("phone")}
                         placeholder="(123) 456-7890"
+                        aria-invalid={Boolean(errors.phone)}
+                        aria-describedby={errors.phone ? "phone-error" : undefined}
                         className="h-14 border-0 border-b-2 border-border rounded-none bg-transparent px-0 text-lg focus:border-primary focus-visible:ring-0 transition-colors"
                       />
+                      {errors.phone && (
+                        <p id="phone-error" className="text-sm text-destructive">{errors.phone}</p>
+                      )}
                     </div>
 
                     <div className="space-y-3">
@@ -179,12 +273,17 @@ export default function ContactPage() {
                       <Textarea
                         id="message"
                         value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        required
+                        onChange={(e) => handleFieldChange("message", e.target.value)}
+                        onBlur={() => handleFieldBlur("message")}
                         placeholder="How can we help you?"
                         rows={4}
+                        aria-invalid={Boolean(errors.message)}
+                        aria-describedby={errors.message ? "message-error" : undefined}
                         className="border-0 border-b-2 border-border rounded-none bg-transparent px-0 text-lg focus:border-primary focus-visible:ring-0 transition-colors resize-none"
                       />
+                      {errors.message && (
+                        <p id="message-error" className="text-sm text-destructive">{errors.message}</p>
+                      )}
                     </div>
 
                     <Button
