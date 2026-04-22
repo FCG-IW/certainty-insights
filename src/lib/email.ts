@@ -7,7 +7,7 @@ export interface EmailPayload {
 
 /**
  * Send a lead notification email via Netlify Function
- * The email is sent server-side to keep the Resend API key secure
+ * The email is sent server-side so SMTP credentials stay in Netlify environment variables
  */
 export async function sendLeadNotification(lead: EmailPayload) {
   try {
